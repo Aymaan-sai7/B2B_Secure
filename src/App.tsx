@@ -19,7 +19,6 @@ import CompanyDetails from "./pages/CompanyDetails";
 import TransactionDetails from "./pages/TransactionDetails";
 
 
-// ✅ Providers
 import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
 
