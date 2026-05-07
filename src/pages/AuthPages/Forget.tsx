@@ -1,5 +1,4 @@
 import PageMeta from "../../components/common/PageMeta";
-// import AuthLayout from "./AuthPageLayout";
 import ForgetForm from "../../components/auth/ForgetForm";
 
 export default function Forget() {

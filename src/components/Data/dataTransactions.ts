@@ -8,7 +8,7 @@ export interface transaction {
   productType: string;
   product: string;
   transactionDate: string;
-  companyWorkingHours: string; // مثلا "9:00 - 18:00"
+  companyWorkingHours: string;
   action: string;
   status: "Completed" | "Pending" | "Failed";
 

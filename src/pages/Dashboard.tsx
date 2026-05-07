@@ -1,20 +1,16 @@
 import Metrics from "../components/dash/Metrics";
 import BarChart from "./Charts/BarCarts";
-// import StatisticsChart from "../../components/ecommerce/StatisticsChart";
 
-// import MonthlyTarget from "../../components/ecommerce/MonthlyTarget";
-// import Alerts from "../components/dash/Alerts";
 import Company from "../pages/Company";
 
-// import DemographicCard from "../../components/ecommerce/DemographicCard";
 import PageMeta from "../components/common/PageMeta";
 
 import PieChart from "./Charts/PieCharts"
 import LineChart from "./Charts/LineCharts"
 
 
-
 export default function Dash() {
+
   return (
     <>
 

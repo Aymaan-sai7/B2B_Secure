@@ -117,7 +117,7 @@ export default function CompanyTable({
                           {/* أيقونة التعديل */}
                           <button
                             onClick={(e) => {
-                              e.stopPropagation(); // يمنع الرو من navigate
+                              e.stopPropagation(); 
                               onEdit(company)
                             }
                             }
@@ -131,7 +131,7 @@ export default function CompanyTable({
                           {/* أيقونة الحذف */}
                           <button
                             onClick={(e) => {
-                              e.stopPropagation(); // يمنع الرو من navigate
+                              e.stopPropagation(); 
                               onDelete(company.id)
                               toast.error("success Delete");
                             }

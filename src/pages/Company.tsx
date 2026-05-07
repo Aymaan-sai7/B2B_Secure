@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import PageMeta from "../components/common/PageMeta";
 import { useNavigate } from "react-router-dom";
-import { CompanyType, companiesData } from "../components/Data/dataCompanies"
+import { CompanyType, companiesData } from "../components/Data/dataCompanies";
 
 import Modal from "../components/ui/Modal";
 import CompanyForm from "../components/Forms/CompanyForm";
@@ -10,7 +10,6 @@ import CompanyTable from "../components/ui/Tables/TableCompany";
 import CompanyToolbar from "../components/ui/TableBar/CompanyToolbar";
 
 import TableSkeleton from "../components/ui/TableSkeleton";
-
 
 import { motion, AnimatePresence } from "framer-motion";
 import { overlay, modal } from "../components/animations/animation";
@@ -23,11 +22,7 @@ interface Props {
 type StatusType = "Completed" | "Pending" | "Failed";
 
 
-// Define the table data using the interface
-
-
 export default function Company({ variant = "full", limit }: Props) {
-
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
@@ -40,13 +35,13 @@ export default function Company({ variant = "full", limit }: Props) {
     return () => clearTimeout(timer);
   }, []);
 
-
-
   const [data, setData] = useState(companiesData);
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeSort, setActiveSort] = useState<"all" | "state" | "Company-name" | "date">("all");
+  const [activeSort, setActiveSort] = useState<
+    "all" | "state" | "Company-name" | "date"
+  >("all");
 
   const [newCompany, setNewCompany] = useState<{
     name: string;
@@ -57,7 +52,6 @@ export default function Company({ variant = "full", limit }: Props) {
     email: "",
     status: "Pending",
   });
-
 
   const filteredData = [...data]
     .filter((item) => {
@@ -81,7 +75,6 @@ export default function Company({ variant = "full", limit }: Props) {
       return 0;
     });
 
-  // ✅ إضافة
   const handleAdd = () => {
     if (!newCompany.name || !newCompany.email) {
       alert("Please fill all fields");
@@ -105,9 +98,7 @@ export default function Company({ variant = "full", limit }: Props) {
   };
 
   const FinalyData =
-    variant === "mini" && limit
-      ? filteredData.slice(0, limit)
-      : filteredData;
+    variant === "mini" && limit ? filteredData.slice(0, limit) : filteredData;
 
   const navigate = useNavigate();
 
@@ -125,8 +116,8 @@ export default function Company({ variant = "full", limit }: Props) {
   const handleUpdate = () => {
     if (editingId === null) return;
 
-    const updatedData = data.map(c =>
-      c.id === editingId ? { ...c, ...newCompany } : c
+    const updatedData = data.map((c) =>
+      c.id === editingId ? { ...c, ...newCompany } : c,
     );
 
     setData(updatedData);
@@ -136,11 +127,9 @@ export default function Company({ variant = "full", limit }: Props) {
   };
 
   const handleDelete = (id: number) => {
-
-    const updatedData = data.filter(c => c.id !== id);
+    const updatedData = data.filter((c) => c.id !== id);
     setData(updatedData);
   };
-
 
   const resetForm = () => {
     setNewCompany({
@@ -150,18 +139,17 @@ export default function Company({ variant = "full", limit }: Props) {
     });
   };
 
-
   const [isReportOpen, setIsReportOpen] = useState(false);
   const total = data.length;
 
-  const completed = data.filter(d => d.status === "Completed").length;
-  const pending = data.filter(d => d.status === "Pending").length;
-  const failed = data.filter(d => d.status === "Failed").length;
+  const completed = data.filter((d) => d.status === "Completed").length;
+  const pending = data.filter((d) => d.status === "Pending").length;
+  const failed = data.filter((d) => d.status === "Failed").length;
 
   const handleDownloadCSV = () => {
     const headers = ["ID", "Name", "Email", "Status", "Date"];
 
-    const rows = data.map(item => [
+    const rows = data.map((item) => [
       item.id,
       item.name,
       item.email,
@@ -171,7 +159,7 @@ export default function Company({ variant = "full", limit }: Props) {
 
     const csvContent =
       "data:text/csv;charset=utf-8," +
-      [headers, ...rows].map(e => e.join(",")).join("\n");
+      [headers, ...rows].map((e) => e.join(",")).join("\n");
 
     const encodedUri = encodeURI(csvContent);
 
@@ -194,7 +182,6 @@ export default function Company({ variant = "full", limit }: Props) {
     };
   }, [isReportOpen]);
 
-
   function toggleFilterDropdown() {
     setIsFilterOpen(!isFilterOpen);
   }
@@ -209,17 +196,13 @@ export default function Company({ variant = "full", limit }: Props) {
 
   return (
     <>
-
-      <PageMeta
-        title="Company"
-        description="Company"
-      />
+      <PageMeta title="Company" description="Company" />
       <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5 }}
-  className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
->
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
+      >
         <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
             Companies
@@ -242,36 +225,24 @@ export default function Company({ variant = "full", limit }: Props) {
         {loading ? (
           <TableSkeleton />
         ) : (
-        <CompanyTable
-          data={FinalyData}
-          onEdit={startEdit}
-          onDelete={handleDelete}
-          onRowClick={(id) => navigate(`/company/${id}`)}
-          variant={variant}
-        />
+          <CompanyTable
+            data={FinalyData}
+            onEdit={startEdit}
+            onDelete={handleDelete}
+            onRowClick={(id) => navigate(`/company/${id}`)}
+            variant={variant}
+          />
         )}
       </motion.div>
-
-
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="relative">
-          <button
-            onClick={() => {
-              setIsOpen(false);
-              setEditingId(null);
-              resetForm();
-
-            }}
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 font-bold text-lg"
-          >
-            &times;
-          </button>
           <CompanyForm
             newCompany={newCompany}
             setNewCompany={setNewCompany}
             editingId={editingId}
             handleAdd={handleAdd}
             handleUpdate={handleUpdate}
+            onClose={() => { setIsOpen(false); setEditingId(null); resetForm(); }}
           />
         </div>
       </Modal>
@@ -287,14 +258,11 @@ export default function Company({ variant = "full", limit }: Props) {
             exit="exit"
             onClick={() => setIsReportOpen(false)}
           >
-
             {/* Modal */}
             <motion.div
               variants={modal}
               onClick={(e) => e.stopPropagation()}
-              // className="relative z-10 bg-white dark:bg-gray-900 rounded-xl w-[400px] p-6 shadow-xl"
               className="relative z-10 bg-white dark:bg-gray-900 rounded-xl w-[500px] max-h-[90vh] overflow-y-auto p-6 shadow-2xl"
-
             >
               {/* close */}
               <button
@@ -303,9 +271,7 @@ export default function Company({ variant = "full", limit }: Props) {
               >
                 ×
               </button>
-
               <h2 className="text-xl font-bold mb-4">Report Summary</h2>
-
               <div className="space-y-2 text-sm">
                 <p>Total: {total}</p>
                 <p className="text-green-600">Completed: {completed}</p>
@@ -322,8 +288,7 @@ export default function Company({ variant = "full", limit }: Props) {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>    </>
+      </AnimatePresence>{" "}
+    </>
   );
 }
-
-

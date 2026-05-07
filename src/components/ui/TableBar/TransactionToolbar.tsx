@@ -14,8 +14,8 @@ interface Props {
     onFilterClick: () => void;
     activeSort: string;
 
-    isFilterOpen: boolean; // ✔️ ده بدل isFilterDropdownOpen
-    closeFilterDropdown: () => void; // ✔️ مهم
+    isFilterOpen: boolean; 
+    closeFilterDropdown: () => void; 
 
     onSort: (value: SortType) => void;
 

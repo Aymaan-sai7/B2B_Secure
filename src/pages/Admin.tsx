@@ -71,7 +71,7 @@ export default function Admin() {
       sorted = [...data];
     }
 
-    setFilteredData(sorted); // 👈 بدل setData
+    setFilteredData(sorted); 
     setIsFilterOpen(false);
   };
   const handleAdd = () => {
@@ -189,19 +189,8 @@ export default function Admin() {
           editingId={editingId}
           handleAdd={handleAdd}
           handleUpdate={handleUpdate}
+          onClose={() => { setIsOpen(false); setEditingId(null); resetForm(); }}
         />
-
-        {/* زرار close */}
-        <button
-          onClick={() => {
-            setIsOpen(false);
-            setEditingId(null);
-            resetForm();
-          }}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-lg"
-        >
-          ×
-        </button>
       </Modal>
     </>
   );

@@ -1,18 +1,16 @@
 import { useParams } from "react-router-dom";
-import { companiesData, Company } from "../components/Data/dataCompanies";
-// لو عايز من API خلي fetch هنا
+import { companiesData, CompanyType } from "../components/Data/dataCompanies";
+
+
 export default function CompanyDetails() {
   const { id } = useParams();
 
-  // نحول id لـ number
   const companyId = Number(id);
 
-  // نجيب الشركة من الـ array
-  const company: Company | undefined = companiesData.find(
+  const company: CompanyType | undefined = companiesData.find(
     (c) => c.id === companyId
   );
 
-  // لو مش موجود
   if (!company) {
     return <div className="p-6">Company not found</div>;
   }

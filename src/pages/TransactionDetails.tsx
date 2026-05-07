@@ -1,18 +1,15 @@
 import { useParams } from "react-router-dom";
 import { transactions, transaction } from "../components/Data/dataTransactions";
-// لو عايز من API خلي fetch هنا
+
 export default function TransactionDetails() {
     const { id } = useParams();
 
-    // نحول id لـ number
     const transactionId = Number(id);
 
-    // نجيب الشركة من الـ array
     const transaction: transaction | undefined = transactions.find(
         (c) => c.id === transactionId
     );
 
-    // لو مش موجود
     if (!transaction) {
         return <div className="p-6">transaction not found</div>;
     }

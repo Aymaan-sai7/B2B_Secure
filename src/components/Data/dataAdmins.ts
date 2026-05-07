@@ -2,7 +2,7 @@
 
 
 
-export type AdminRole = "Admin" | "Moderator" | "User" | "Support"|"Admin Management";
+export type AdminRole = "Admin" | "Moderator" ;
 
 // Define the TypeScript interface for the table rows
 export interface AdminType {
@@ -14,7 +14,6 @@ export interface AdminType {
   action: string;
 }
 
-// Define the table data using the interface
 export const tableData: AdminType[] = [
   {
     id: 1,
@@ -29,7 +28,7 @@ export const tableData: AdminType[] = [
     name: "Mohamed Ali",
     createAt: "Aug 21, 2025",
     email: "mohamed.ali@gmail.com",
-    role: "Admin Management",
+    role: "Admin",
     action: "icons",
   },
   {
@@ -53,7 +52,7 @@ export const tableData: AdminType[] = [
     name: "Mahmoud Adel",
     createAt: "May 18, 2025",
     email: "mahmoud.adel@gmail.com",
-    role: "Support",
+    role: "Admin",
     action: "icons",
   },
   {
@@ -61,7 +60,7 @@ export const tableData: AdminType[] = [
     name: "Karim Mostafa",
     createAt: "Apr 12, 2025",
     email: "karim.mostafa@gmail.com",
-    role: "User",
+    role: "Admin",
     action: "icons",
   },
   {
@@ -69,6 +68,6 @@ export const tableData: AdminType[] = [
     name: "Hassan Tarek",
     createAt: "Mar 5, 2025",
     email: "hassan.tarek@gmail.com",
-    role: "User",
+    role: "Admin",
     action: "icons",
   },];

@@ -98,7 +98,7 @@ export default function TransactionTable({
                                 {/* أيقونة التعديل */}
                                 <button
                                     onClick={(e) => {
-                                        e.stopPropagation(); // يمنع الرو من navigate
+                                        e.stopPropagation(); 
                                         onEdit(transaction)
                                     }
                                     }
@@ -112,7 +112,7 @@ export default function TransactionTable({
                                 {/* أيقونة الحذف */}
                                 <button
                                     onClick={(e) => {
-                                        e.stopPropagation(); // يمنع الرو من navigate
+                                        e.stopPropagation(); 
                                         onDelete(transaction.id)
                                     }
                                     }

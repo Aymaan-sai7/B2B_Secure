@@ -22,7 +22,6 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   useEffect(() => {
     localStorage.setItem("lang", language);
 
-    // 👇 أهم حاجة RTL
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
     document.documentElement.lang = language;
   }, [language]);

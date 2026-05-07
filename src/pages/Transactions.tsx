@@ -8,17 +8,12 @@ import PageMeta from "../components/common/PageMeta";
 import { useNavigate } from "react-router-dom";
 import { transaction, transactions } from "../components/Data/dataTransactions";
 
-
 import TableSkeleton from "../components/ui/TableSkeleton";
 import { motion } from "framer-motion";
 
-
-
 type StatusType = "Completed" | "Pending" | "Failed";
 
-
 export default function Transaction() {
-
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
@@ -31,18 +26,18 @@ export default function Transaction() {
     return () => clearTimeout(timer);
   }, []);
 
-
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
-
 
   const [data, setData] = useState(transactions);
   const [filteredData, setFilteredData] = useState(transactions);
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSort, setActiveSort] = useState<"all" | "state" | "sender" | "receiver">("all");
+  const [activeSort, setActiveSort] = useState<
+    "all" | "state" | "sender" | "receiver"
+  >("all");
 
   const [newTransaction, setNewTransaction] = useState<transaction>({
-    id: 0, // هيتم تغييره عند الإضافة
+    id: 0, 
     date: new Date().toLocaleDateString(),
     senderCompany: "",
     receiverCompany: "",
@@ -72,7 +67,6 @@ export default function Transaction() {
     });
   };
 
-
   const handleSort = (type: "all" | "state" | "sender" | "receiver") => {
     setActiveSort(type);
     let sorted = [...data];
@@ -80,25 +74,19 @@ export default function Transaction() {
     if (type === "state") {
       const order: StatusType[] = ["Completed", "Pending", "Failed"];
 
-      sorted.sort(
-        (a, b) => order.indexOf(a.status) - order.indexOf(b.status)
-      );
+      sorted.sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
     }
 
     if (type === "sender") {
-      sorted.sort((a, b) =>
-        a.senderCompany.localeCompare(b.senderCompany)
-      );
+      sorted.sort((a, b) => a.senderCompany.localeCompare(b.senderCompany));
     }
 
     if (type === "receiver") {
-      sorted.sort((a, b) =>
-        a.receiverCompany.localeCompare(b.receiverCompany)
-      );
+      sorted.sort((a, b) => a.receiverCompany.localeCompare(b.receiverCompany));
     }
 
     if (type === "all") {
-      sorted = [...data]; // يرجع الطبيعي
+      sorted = [...data]; 
     }
 
     setFilteredData(sorted);
@@ -109,7 +97,7 @@ export default function Transaction() {
     resetForm();
     setIsOpen(true);
   };
-  // ✅ إضافة
+
   const handleAdd = () => {
     if (!newTransaction.senderCompany || !newTransaction.receiverCompany) {
       alert("Please fill all required fields");
@@ -132,7 +120,7 @@ export default function Transaction() {
     setFilteredData(updatedData);
     setIsOpen(false);
 
-    // Reset form
+    
     setNewTransaction({
       id: 0,
       date: new Date().toLocaleDateString(),
@@ -151,20 +139,19 @@ export default function Transaction() {
 
   const navigate = useNavigate();
 
-
   const [editingId, setEditingId] = useState<number | null>(null);
 
   const startEdit = (transaction: transaction) => {
-    setEditingId(transaction.id); // حفظ الـ id اللي هنعمل عليه تعديل
-    setNewTransaction({ ...transaction }); // pre-fill الفورم
-    setIsOpen(true); // فتح الفورم
+    setEditingId(transaction.id); 
+    setNewTransaction({ ...transaction }); 
+    setIsOpen(true);
   };
 
   const handleUpdate = () => {
     if (editingId === null) return;
 
-    const updatedData = data.map(t =>
-      t.id === editingId ? { ...t, ...newTransaction } : t
+    const updatedData = data.map((t) =>
+      t.id === editingId ? { ...t, ...newTransaction } : t,
     );
 
     setData(updatedData);
@@ -174,11 +161,10 @@ export default function Transaction() {
   };
 
   const handleDelete = (id: number) => {
-    const updatedData = data.filter(t => t.id !== id);
+    const updatedData = data.filter((t) => t.id !== id);
     setData(updatedData);
     setFilteredData(updatedData);
   };
-
 
   function toggleFilterDropdown() {
     setIsFilterDropdownOpen(!isFilterDropdownOpen);
@@ -191,14 +177,14 @@ export default function Transaction() {
   const [isReportOpen, setIsReportOpen] = useState(false);
   const total = data.length;
 
-  const completed = data.filter(d => d.status === "Completed").length;
-  const pending = data.filter(d => d.status === "Pending").length;
-  const failed = data.filter(d => d.status === "Failed").length;
+  const completed = data.filter((d) => d.status === "Completed").length;
+  const pending = data.filter((d) => d.status === "Pending").length;
+  const failed = data.filter((d) => d.status === "Failed").length;
 
   const handleDownloadCSV = () => {
     const headers = ["ID", "Sender", "Receiver", "Amount", "Status", "Date"];
 
-    const rows = data.map(item => [
+    const rows = data.map((item) => [
       item.id,
       item.senderCompany,
       item.receiverCompany,
@@ -209,7 +195,7 @@ export default function Transaction() {
 
     const csvContent =
       "data:text/csv;charset=utf-8," +
-      [headers, ...rows].map(e => e.join(",")).join("\n");
+      [headers, ...rows].map((e) => e.join(",")).join("\n");
 
     const encodedUri = encodeURI(csvContent);
 
@@ -223,16 +209,13 @@ export default function Transaction() {
 
   return (
     <>
-      <PageMeta
-        title="Transactions"
-        description="Transactions"
-      />
+      <PageMeta title="Transactions" description="Transactions" />
       <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5 }}
-  className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
->
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
+      >
         <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
             Transactions
@@ -264,34 +247,20 @@ export default function Transaction() {
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="relative">
-
-          {/* زرار الإغلاق */}
-          <button
-            onClick={() => {
-              setIsOpen(false);
-              setEditingId(null);
-              resetForm();
-            }}
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 font-bold text-lg"
-          >
-            &times;
-          </button>
-
           <TransactionForm
             newTransaction={newTransaction}
             setNewTransaction={setNewTransaction}
             editingId={editingId}
             handleAdd={handleAdd}
             handleUpdate={handleUpdate}
+            onClose={() => { setIsOpen(false); setEditingId(null); resetForm(); }}
           />
-
         </div>
       </Modal>
 
       {isReportOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl w-[400px] p-6 relative">
-
             {/* close */}
             <button
               onClick={() => setIsReportOpen(false)}

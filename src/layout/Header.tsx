@@ -80,7 +80,6 @@ const Header: React.FC = () => {
                 />
               </svg>
             )}
-            {/* Cross Icon */}
           </button>
 
           <button
