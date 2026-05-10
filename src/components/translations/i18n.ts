@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 // استدعاء ملفات الترجمة
 import { admins } from "./admins_Tr";
 import { companies } from "./companies_Tr";
-import { transactions } from "./Transactions_Tr";
+import { Transactions } from "./Transactions_Tr";
 import { common } from "./common_Tr";
 
 
@@ -16,7 +16,7 @@ i18n.use(initReactI18next).init({
       translation: {
         ...admins.en.translation,       
         ...companies.en.translation,    
-        ...transactions.en.translation,
+        ...Transactions.en.translation,
         ...common.en.translation,
       },
     },
@@ -24,7 +24,7 @@ i18n.use(initReactI18next).init({
       translation: {
         ...admins.ar.translation,
         ...companies.ar.translation,
-        ...transactions.ar.translation,
+        ...Transactions.ar.translation,
                 ...common.ar.translation,
 
       },

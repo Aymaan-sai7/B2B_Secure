@@ -1,4 +1,4 @@
-export const transactions = {
+export const Transactions = {
   en: {
     translation: {
       transactions: "Transactions",

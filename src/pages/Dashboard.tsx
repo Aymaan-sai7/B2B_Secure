@@ -15,12 +15,10 @@ export default function Dash() {
 
       <div className="grid grid-cols-12 gap-4 md:gap-6">
 
-        {/* ── Row 1: Metrics ── */}
         <div className="col-span-12">
           <Metrics />
         </div>
 
-        {/* ── Row 2: Bar + Mini Companies ── */}
         <div className="col-span-12 xl:col-span-7">
           <BarChart />
         </div>
@@ -28,7 +26,6 @@ export default function Dash() {
           <Company variant="mini" limit={5} />
         </div>
 
-        {/* ── Row 3: Pie + Line ── */}
         <div className="col-span-12 xl:col-span-6">
           <PieChart />
         </div>
