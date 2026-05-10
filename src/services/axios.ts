@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost/api",
+  baseURL: "https://b2bshield.dpdns.org/api",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

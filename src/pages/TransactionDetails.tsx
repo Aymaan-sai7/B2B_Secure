@@ -1,79 +1,122 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { transactions, transaction } from "../components/Data/dataTransactions";
 
+function StatusBadge({ status }: { status: transaction["status"] }) {
+  const styles = {
+    Completed: "bg-green-50 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800",
+    Pending:   "bg-yellow-50 text-yellow-700 border border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800",
+    Failed:    "bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800",
+  };
+  const icons = { Completed: "✓", Pending: "⏳", Failed: "✕" };
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${styles[status]}`}>
+      <span>{icons[status]}</span>
+      {status}
+    </span>
+  );
+}
+
+function Row({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="flex items-center justify-between py-3.5 border-b border-gray-100 dark:border-gray-800 last:border-0">
+      <span className="text-sm text-gray-500 dark:text-gray-400">{label}</span>
+      <span className="text-sm font-medium text-gray-800 dark:text-white">{value}</span>
+    </div>
+  );
+}
+
+function SectionLabel({ label }: { label: string }) {
+  return (
+    <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 px-6 pt-5 pb-1">
+      {label}
+    </p>
+  );
+}
+
 export default function TransactionDetails() {
-    const { id } = useParams();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const transactionId = Number(id);
+  const transaction: transaction | undefined = transactions.find((c) => c.id === transactionId);
 
-    const transactionId = Number(id);
-
-    const transaction: transaction | undefined = transactions.find(
-        (c) => c.id === transactionId
-    );
-
-    if (!transaction) {
-        return <div className="p-6">transaction not found</div>;
-    }
-
+  if (!transaction) {
     return (
-        <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Transaction Details</h2>
-
-            <table className="w-full table-auto border-collapse">
-                <tbody className="space-y-2">
-                    <tr className="border-b">
-                        <td className="font-semibold py-2">ID:</td>
-                        <td className="py-2 text-right">{transaction.id}</td>
-                    </tr>
-
-                    <tr className="border-b">
-                        <td className="font-semibold py-2">Transaction Date:</td>
-                        <td className="py-2 text-right">{transaction.date}</td>
-                    </tr>
-
-                    <tr className="border-b">
-                        <td className="font-semibold py-2">Sender Company:</td>
-                        <td className="py-2 text-right">{transaction.senderCompany}</td>
-                    </tr>
-
-                    <tr className="border-b">
-                        <td className="font-semibold py-2">Receiver Company:</td>
-                        <td className="py-2 text-right">{transaction.receiverCompany}</td>
-                    </tr>
-
-                    <tr className="border-b">
-                        <td className="font-semibold py-2">Status:</td>
-                        <td className="py-2 text-right">
-                            <span
-                                className={
-                                    transaction.status === "Completed"
-                                        ? "text-green-600"
-                                        : transaction.status === "Pending"
-                                            ? "text-yellow-500"
-                                            : "text-red-600"
-                                }
-                            >
-                                {transaction.status}
-                            </span>
-                        </td>
-                    </tr>
-
-                    <tr className="border-b">
-                        <td className="font-semibold py-2">Amount Send:</td>
-                        <td className="py-2 text-right">{transaction.amountSend}</td>
-                    </tr>
-
-                    <tr className="border-b">
-                        <td className="font-semibold py-2">Product Type:</td>
-                        <td className="py-2 text-right">{transaction.productType}</td>
-                    </tr>
-
-                    <tr className="border-b">
-                        <td className="font-semibold py-2">Product:</td>
-                        <td className="py-2 text-right">{transaction.product}</td>
-                    </tr>
-                    
-                </tbody>
-            </table>
-        </div>
+      <div className="min-h-[400px] flex flex-col items-center justify-center gap-3">
+        <span className="text-4xl">💳</span>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">Transaction not found</p>
+        <button
+          onClick={() => navigate(-1)}
+          className="text-xs text-[#12033A] dark:text-indigo-400 underline underline-offset-2"
+        >
+          Go back
+        </button>
+      </div>
     );
+  }
+
+  return (
+    <div className="max-w-2xl mx-auto p-4 sm:p-6">
+
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mb-6 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to transactions
+      </button>
+
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03] overflow-hidden">
+
+        <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            {/* Icon */}
+            <div className="w-12 h-12 rounded-xl bg-[#12033A] flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-0.5">
+                Transaction #{transaction.id}
+              </p>
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                {transaction.senderCompany} → {transaction.receiverCompany}
+              </h2>
+            </div>
+          </div>
+          <StatusBadge status={transaction.status} />
+        </div>
+
+        <div className="px-6 py-4 bg-gray-50 dark:bg-white/[0.02] border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+          <span className="text-sm text-gray-500 dark:text-gray-400">Amount sent</span>
+          <span className="text-2xl font-bold text-gray-800 dark:text-white">
+            ${transaction.amountSend.toLocaleString()}
+          </span>
+        </div>
+
+        <SectionLabel label="Transfer" />
+        <div className="px-6 pb-2">
+          <Row label="Transaction ID"   value={`#${transaction.id}`} />
+          <Row label="Date"             value={transaction.date} />
+          <Row label="Status"           value={<StatusBadge status={transaction.status} />} />
+        </div>
+
+        <SectionLabel label="Parties" />
+        <div className="px-6 pb-2">
+          <Row label="Sender company"   value={transaction.senderCompany} />
+          <Row label="Receiver company" value={transaction.receiverCompany} />
+          <Row label="Working hours"    value={transaction.companyWorkingHours} />
+        </div>
+
+        <SectionLabel label="Product" />
+        <div className="px-6 pb-4">
+          <Row label="Product type"     value={transaction.productType} />
+          <Row label="Product"          value={transaction.product} />
+        </div>
+
+      </div>
+    </div>
+  );
 }

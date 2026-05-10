@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import PageMeta from "../components/common/PageMeta";
 import { useNavigate } from "react-router-dom";
-import { CompanyType, companiesData } from "../components/Data/dataCompanies";
-
+import { CompanyType } from "../components/Data/dataCompanies";
 import Modal from "../components/ui/Modal";
 import CompanyForm from "../components/Forms/CompanyForm";
 import CompanyTable from "../components/ui/Tables/TableCompany";
@@ -14,28 +13,69 @@ import TableSkeleton from "../components/ui/TableSkeleton";
 import { motion, AnimatePresence } from "framer-motion";
 import { overlay, modal } from "../components/animations/animation";
 
+
+import api from "../services/axios";
+
+
 interface Props {
   variant?: "full" | "mini";
   limit?: number;
 }
 
 type StatusType = "Completed" | "Pending" | "Failed";
+interface CompanyApiResponse {
+  id: number;
+  name: string;
+  email: string;
 
+  is_approved: boolean;
+
+  created_at: string;
+}
 
 export default function Company({ variant = "full", limit }: Props) {
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
+  const [view, setView] = useState<"all" | "pending">("all");
+
+  const fetchCompanies = async () => {
     setLoading(true);
 
-    const timer = setTimeout(() => {
-      setData(companiesData);
+    try {
+      const url =
+        view === "pending"
+          ? "/companies/pending"
+          : "/companies";
+
+      const res = await api.get(url);
+
+      const companies =
+        view === "pending"
+          ? res.data.pending_companies
+          : res.data;
+
+      const formatted = companies.map((c: CompanyApiResponse) => ({
+        id: c.id,
+        name: c.name,
+        email: c.email,
+        status: c.is_approved ? "Completed" : "Pending",
+        date: new Date(c.created_at).toLocaleDateString(),
+        action: "icons",
+      }));
+
+      setData(formatted);
+    } catch (err) {
+      console.log(err);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
+  };
 
-    return () => clearTimeout(timer);
-  }, []);
+  useEffect(() => {
+    fetchCompanies();
+  }, [view]);
 
-  const [data, setData] = useState(companiesData);
+
+  const [data, setData] = useState<CompanyType[]>([]);
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -204,9 +244,36 @@ export default function Company({ variant = "full", limit }: Props) {
         className="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
       >
         <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-            Companies
-          </h3>
+          <div className="flex flex-col gap-2">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
+              Companies
+            </h3>
+
+            {/* Tabs */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => setView("all")}
+                className={`px-3 py-1.5 rounded-lg text-sm border transition
+          ${view === "all"
+                    ? "bg-[#12033A] text-white"
+                    : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700"
+                  }`}
+              >
+                All
+              </button>
+
+              <button
+                onClick={() => setView("pending")}
+                className={`px-3 py-1.5 rounded-lg text-sm border transition
+          ${view === "pending"
+                    ? "bg-yellow-500 text-white"
+                    : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700"
+                  }`}
+              >
+                Pending
+              </button>
+            </div>
+          </div>
 
           {variant === "full" && (
             <CompanyToolbar

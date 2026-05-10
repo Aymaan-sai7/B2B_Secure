@@ -1,6 +1,5 @@
 import { Edit2, Trash2 } from "lucide-react";
 import Badge from "../Badge";
-import toast from "react-hot-toast";
 import { CompanyType } from "../../Data/dataCompanies";
 
 
@@ -133,7 +132,6 @@ export default function CompanyTable({
                             onClick={(e) => {
                               e.stopPropagation(); 
                               onDelete(company.id)
-                              toast.error("success Delete");
                             }
                             }
                             className="text-red-600 hover:text-red-800"

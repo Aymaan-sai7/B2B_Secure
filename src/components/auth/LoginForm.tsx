@@ -22,7 +22,7 @@ export default function LoginForm() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
   const isValidPassword = (password: string) => {
-    const regex = /^(?=.*\d).{8,16}$/;
+    const regex = /^(?=.{8,16}$).*$/;
     return regex.test(password);
   };
 
@@ -70,7 +70,7 @@ export default function LoginForm() {
       const res = await loginAPI({ email, password });
       console.log("LOGIN RESPONSE:", res);
 
-      localStorage.setItem("token", res.token);
+      localStorage.setItem("token", res.access_token);
       enqueueSnackbar("Login successful", { variant: "success" });
       navigate("/");
     } catch (error) {

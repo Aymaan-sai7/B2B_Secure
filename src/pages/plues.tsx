@@ -42,3 +42,25 @@
 
 
 // }
+
+
+
+
+// عدلت الشارتس وهعدل الديتيلز
+
+
+
+
+// // Bar
+// <BarChart data={apiData.monthly} categories={apiData.months} total={apiData.total} growth={apiData.growth} />
+
+// // Line
+// <LineChart series={[
+//   { name: "Sales", data: apiData.sales, color: "#12033A", description: "..." },
+//   { name: "Revenue", data: apiData.revenue, color: "#9CB9FF", description: "..." },
+// ]} />
+
+// // Pie
+// <PieChart slices={apiData.statuses.map(s => ({
+//   label: s.name, value: s.count, color: s.color, description: s.desc
+// }))} />

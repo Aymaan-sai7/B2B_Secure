@@ -4,7 +4,7 @@ export const loginAPI = async (data: {
   email: string;
   password: string;
 }) => {
-  const res = await api.post("/auth/signin", data);
+  const res = await api.post("/login", data);
   return res.data;
 };
 
