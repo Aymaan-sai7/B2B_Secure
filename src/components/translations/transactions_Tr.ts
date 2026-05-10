@@ -1,4 +1,4 @@
-export const Transactions = {
+const Transactions = {
   en: {
     translation: {
       transactions: "Transactions",
@@ -26,3 +26,6 @@ export const Transactions = {
     },
   },
 };
+
+
+export default Transactions;

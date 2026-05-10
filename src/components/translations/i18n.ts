@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 // استدعاء ملفات الترجمة
 import { admins } from "./admins_Tr";
 import { companies } from "./companies_Tr";
-import { Transactions } from "./Transactions_Tr";
+import Transactions from "./transactions_tr";
 import { common } from "./common_Tr";
 
 
