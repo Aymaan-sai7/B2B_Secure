@@ -23,7 +23,7 @@ export default function Dash() {
           <BarChart />
         </div>
         <div className="col-span-12 xl:col-span-5">
-          <Company variant="mini" limit={5} />
+          <Company variant="mini" limit={4} />
         </div>
 
         <div className="col-span-12 xl:col-span-6">
