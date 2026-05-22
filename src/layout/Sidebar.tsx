@@ -62,9 +62,9 @@ const Sidebar: React.FC = () => {
             <span className={`menu-item-icon-size ${isActive(nav.path) ? "menu-item-icon-active" : "menu-item-icon-inactive"}`}>
               {nav.icon}
             </span>
-            {(isExpanded || isMobileOpen) && !window.matchMedia("(max-width: 1024px)").matches && (
-  <span className="menu-item-text">{nav.name}</span>
-)}
+            {(isExpanded || isMobileOpen) && (
+              <span className="menu-item-text">{nav.name}</span>
+            )}
           </Link>
         )}
       </li>
@@ -84,9 +84,9 @@ const Sidebar: React.FC = () => {
   className={`fixed top-0 start-0 h-screen z-50
     layout-surface border-e border-r
     transition-all duration-300
-    pt-16 lg:pt-0
-    w-[70px] lg:${isExpanded ? "w-[290px]" : "w-[90px]"}
+    ${isExpanded ? "w-[290px]" : "w-[90px]"}
     ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+    pt-16 lg:pt-0
   `}
 >
       <div
