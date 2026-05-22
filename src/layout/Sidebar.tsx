@@ -8,7 +8,6 @@ import {
   Settings
 } from "lucide-react";
 import { useSidebar } from "../context/SidebarContext";
-import { useLanguage } from "../context/LanguageContext";
 import { useAdmin } from "../context/AdminContext";
 import { isSuperAdmin } from "../permissions/permissions";
 import { NavItem } from "../interfaces/Sidebar";
@@ -79,7 +78,6 @@ const Sidebar: React.FC = () => {
     </ul>
   );
 
-  const { language } = useLanguage()
   const { admin } = useAdmin();
   const filteredNavItems = navItems.filter((item) => {
     if (item.path === "/admins") {
@@ -89,19 +87,18 @@ const Sidebar: React.FC = () => {
   });
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 start-0 h-screen  bg-[#FFFFFF]/90 backdrop-blur-xl dark:bg-[#101010]/90 dark:border-[#5C5C5C] text-gray-900
-border-e border-r border-[#E7E6EB]
-        ${isExpanded || isMobileOpen
-          ? "w-[290px]"
-          : "w-[90px]"
-        }
-        ${isMobileOpen
-          ? "translate-x-0"
-          : language === "ar"
-            ? "translate-x-full"
-            : "-translate-x-full"
-        }
-        lg:translate-x-0`}
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 start-0 h-screen
+bg-[#FFFFFF]/90 backdrop-blur-xl dark:bg-[#101010]/90 dark:border-[#5C5C5C]
+text-gray-900 border-e border-r border-[#E7E6EB]
+transition-transform duration-300
+
+${isExpanded ? "w-[290px]" : "w-[90px]"}
+
+${isMobileOpen
+  ? "translate-x-0"
+  : "translate-x-full lg:translate-x-0"
+}
+`}
       onMouseEnter={() => !isExpanded}
     >
       <div

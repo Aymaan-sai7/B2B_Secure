@@ -3,7 +3,6 @@ import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggle";
 import NotificationDropdown from "../components/header/NotificationDropdown";
 import UserDropdown from "../components/header/AdminDropdown";
-import { LanguageToggle } from "../components/common/LanguageToggle";
 
 const Header: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -70,7 +69,6 @@ const Header: React.FC = () => {
 
         <div className={`${isApplicationMenuOpen ? "flex" : "hidden"} items-center justify-between w-full gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0 border-b border-[#E7E6EB] dark:border-[#5C5C5C] lg:border-b-0`}>
           <div className="flex items-center gap-2 2xsm:gap-3">
-            <LanguageToggle />
             <ThemeToggleButton />
             <NotificationDropdown />
           </div>
