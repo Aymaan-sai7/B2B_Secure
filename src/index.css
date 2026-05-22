@@ -1,3 +1,4 @@
+@source "../src/**/*.{ts,tsx}";
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap")
 layer(base);
 
@@ -412,4 +413,20 @@ input[type="time"]::-webkit-inner-spin-button {
   .table-header {
     @apply text-gray-500 dark:text-gray-400;
   }
+}
+
+@utility menu-item-icon-size {
+  @apply size-5 flex-shrink-0;
+}
+
+@utility menu-item-text {
+  @apply text-sm font-medium;
+}
+
+@utility menu-item-icon-active {
+  @apply text-white;
+}
+
+@utility menu-item-icon-inactive {
+  @apply text-inactive;
 }

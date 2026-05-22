@@ -96,7 +96,7 @@ ${isExpanded ? "w-[290px]" : "w-[90px]"}
 
 ${isMobileOpen
   ? "translate-x-0"
-  : "translate-x-full lg:translate-x-0"
+  : "-translate-x-full lg:translate-x-0"
 }
 `}
       onMouseEnter={() => !isExpanded}
