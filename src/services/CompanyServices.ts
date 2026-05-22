@@ -14,7 +14,7 @@ export const getPendingCompaniesAPI = async (): Promise<CompanyApiResponse[]> =>
 
 export const getCompanyByIdAPI = async (id: number): Promise<CompanyApiResponse> => {
   const res = await api.get(`/companies/${id}`);
-  return res.data.data;
+  return res.data;
 };
 
 export const createCompanyAPI = async (data: CompanyPayload): Promise<CompanyApiResponse> => {
