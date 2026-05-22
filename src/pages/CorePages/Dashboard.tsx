@@ -10,7 +10,6 @@ export default function Dash() {
   const { charts } = useDashboardCharts();
   const { data: summaryData, loading: summaryLoading } = useDashboardSummary();
 
-// وتمرره للـ Metrics
   return (
     <>
       <PageMeta title="Dashboard B2B" description="Dashboard" />
@@ -26,6 +25,7 @@ export default function Dash() {
         <div className="col-span-12 xl:col-span-7">
           <BarChart
             labels={charts?.bar_chart.labels}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             datasets={charts?.bar_chart.datasets as any}
           />
         </div>
@@ -37,6 +37,7 @@ export default function Dash() {
         <div className="col-span-12 xl:col-span-5">
           <PieChart
             labels={charts?.pie_chart.labels}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             datasets={charts?.pie_chart.datasets as any}
           />
         </div>

@@ -136,6 +136,7 @@ export default function Company({ variant = "full", limit }: Props) {
       enqueueSnackbar("Company Added Successfully", { variant: "success" });
       fetchCompanies();
       closeModal();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.log(err);
       enqueueSnackbar(err?.response?.data?.message || "Failed to add company", { variant: "error" });

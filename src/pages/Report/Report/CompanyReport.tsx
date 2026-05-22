@@ -34,7 +34,7 @@ export default function CompanyReportModal({ isOpen, onClose }: Props) {
           <motion.div
             variants={modal}
             onClick={(e) => e.stopPropagation()}
-            className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#E7E6EB] dark:border-[#5C5C5C] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6"
+            className="bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#E7E6EB] dark:border-[#5C5C5C] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 no-scrollbar"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
