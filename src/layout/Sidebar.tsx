@@ -60,17 +60,15 @@ const Sidebar: React.FC = () => {
       )}
 
       <aside
-        className={`
-          fixed top-0 start-0 h-screen z-50 flex flex-col
-          bg-[#FFFFFF]/95 dark:bg-[#101010]/95
-          backdrop-blur-xl
-          border-r border-[#E7E6EB] dark:border-[#5C5C5C]
-          transition-all duration-300 ease-in-out
-          pt-16 lg:pt-0
-          ${expanded ? "w-[260px]" : "w-[72px]"}
-          ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-        `}
-      >
+  className={`
+    fixed top-0 start-0 h-screen z-40 flex flex-col
+    layout-surface
+    border-r
+    transition-all duration-300 ease-in-out
+    ${expanded ? "w-[260px]" : "w-[72px]"}
+    ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+  `}
+>
         {/* Logo */}
         <div className={`py-6 px-4 flex items-center gap-3 border-b border-[#E7E6EB] dark:border-[#5C5C5C] ${!expanded ? "justify-center" : ""}`}>
           <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-[#12033A] shadow-md">
