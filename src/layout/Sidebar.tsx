@@ -70,7 +70,7 @@ const Sidebar: React.FC = () => {
   `}
 >
         {/* Logo */}
-        <div className={`py-6 px-4 flex items-center gap-3 border-b border-[#E7E6EB] dark:border-[#5C5C5C] ${!expanded ? "justify-center" : ""}`}>
+        <div className={`py-4 px-4 flex items-center gap-3 ${!expanded ? "justify-center" : ""}`}>
           <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-[#12033A] shadow-md">
             <span className="text-sm font-bold text-white">B2B</span>
           </div>
