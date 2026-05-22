@@ -51,8 +51,8 @@ export default function LineChart({
 
   const seriesStats = resolvedDatasets.map((d) => {
     const total  = d.data.reduce((a, b) => a + b, 0);
-    const latest = d.data.at(-1) ?? 0;
-    const prev   = d.data.at(-2) ?? 0;
+    const latest = d.data[d.data.length - 1]
+const prev = d.data[d.data.length - 2]
     const growth = prev > 0 ? Number((((latest - prev) / prev) * 100).toFixed(1)) : null;
     return { ...d, total, growth };
   });

@@ -7,7 +7,7 @@ import LineChart from "../../components/Charts/Line";
 import PieChart from "../../components/Charts/Pie";
 import {useDashboardCharts, useDashboardSummary} from "../../services/DashboardService"; 
 export default function Dash() {
-  const { charts, loading } = useDashboardCharts();
+  const { charts } = useDashboardCharts();
   const { data: summaryData, loading: summaryLoading } = useDashboardSummary();
 
 // وتمرره للـ Metrics
@@ -43,7 +43,10 @@ export default function Dash() {
         <div className="col-span-12 xl:col-span-7">
           <LineChart
             labels={charts?.line_chart.labels}
-            datasets={charts?.line_chart.datasets}
+            datasets={charts?.line_chart.datasets?.map((item) => ({
+  ...item,
+  label: item.label || "",
+}))}
           />
         </div>
 
