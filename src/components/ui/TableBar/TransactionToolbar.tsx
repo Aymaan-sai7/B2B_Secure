@@ -51,9 +51,16 @@ export default function TransactionToolbar({
           isOpen={isFilterOpen}
           onClose={closeFilterDropdown}
           className="
-    absolute z-10 mt-2 left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 w-[90vw] max-w-[320px] sm:w-44
-    flex flex-col gap-0.5 rounded-xl border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-[#1E1E1E] p-1.5 shadow-lg
-  ">
+  absolute z-10 mt-2
+  left-1/2 -translate-x-[70%]
+  sm:left-auto sm:right-0 sm:translate-x-0
+  w-[260px] sm:w-44
+  flex flex-col gap-0.5
+  rounded-xl border border-[#E7E6EB]
+  dark:border-[#5C5C5C]
+  bg-[#FFFFFF] dark:bg-[#1E1E1E]
+  p-1.5 shadow-lg
+">
           {(["all", "state", "sender", "receiver"] as SortType[]).map((sort) => (
             <DropdownItem
               key={sort}
