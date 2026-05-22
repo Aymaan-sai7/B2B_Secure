@@ -10,11 +10,19 @@ type Notification = {
   isRead: boolean;
 };
 interface NotificationApiResponse {
-  id: number;
-  title: string;
-  message: string;
+  id: string;
+  read_at: string | null;
   created_at: string;
-  is_read: boolean;
+  data: {
+    title: string;
+    message: string;
+    created_at: string;
+    meta: {
+      company_id: number;
+      company_name: string;
+      email: string;
+    };
+  };
 }
 
 export default function NotificationDropdown() {
@@ -37,13 +45,12 @@ export default function NotificationDropdown() {
     const fetchNotifications = async () => {
       try {
         const res = await api.get("/admin/notifications");
-        console.log(res.data);
-        const formatted: Notification[] = res.data.data.map(
+        const formatted: Notification[] = res.data.notifications.map(
           (n: NotificationApiResponse) => ({
             id: n.id,
-            title: n.title || n.message,
-            time: new Date(n.created_at).toLocaleString(),
-            isRead: n.is_read,
+            title: n.data.title || n.data.message,
+            time: new Date(n.data.created_at).toLocaleString(),
+            isRead: n.read_at !== null,
           }),
         );
         setNotifications(formatted);
