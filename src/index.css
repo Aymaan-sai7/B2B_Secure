@@ -298,10 +298,6 @@ layer(base);
   @apply text-inactive hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5;
 }
 
-@utility menu-item-icon-inactive {
-  @apply text-inactive dark:text-gray-300;
-}
-
 @utility menu-icon {
   & svg {
     @apply size-5;
