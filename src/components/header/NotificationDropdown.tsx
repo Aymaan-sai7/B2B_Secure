@@ -24,7 +24,7 @@ export default function NotificationDropdown() {
   const toggleDropdown = () => setIsOpen((prev) => !prev);
   const closeDropdown = () => setIsOpen(false);
   const markAllAsRead = () => setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-  const handleDelete    = (id: number) => setNotifications((prev) => prev.filter((n) => n.id !== id));
+  const handleDelete = (id: number) => setNotifications((prev) => prev.filter((n) => n.id !== id));
 
   const handleOpen = () => {
     toggleDropdown();
@@ -32,26 +32,26 @@ export default function NotificationDropdown() {
   };
 
   useEffect(() => {
-  const fetchNotifications = async () => {
-    try {
-      const res = await api.get("/admin/notifications");
-      console.log(res.data);
-      const formatted: Notification[] = res.data.data.map(
-        (n: NotificationApiResponse) => ({
-          id: n.id,
-          title: n.title || n.message,
-          time: new Date(n.created_at).toLocaleString(),
-          isRead: n.is_read,
-        })
-      );
-      setNotifications(formatted);
-    } 
-    catch (err) {
-      console.log(err);
-    }
-  };
-  fetchNotifications();
-}, []);
+    const fetchNotifications = async () => {
+      try {
+        const res = await api.get("/admin/notifications");
+        console.log(res.data);
+        const formatted: Notification[] = res.data.data.map(
+          (n: NotificationApiResponse) => ({
+            id: n.id,
+            title: n.title || n.message,
+            time: new Date(n.created_at).toLocaleString(),
+            isRead: n.is_read,
+          })
+        );
+        setNotifications(formatted);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    };
+    fetchNotifications();
+  }, []);
 
   return (
     <div className="relative">
@@ -73,8 +73,9 @@ export default function NotificationDropdown() {
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className="absolute -right-[240px] lg:right-0 mt-[17px] w-[350px] sm:w-[361px] rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark overflow-hidden"
-      >
+        className=" absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-0 mt-[17px] w-[calc(100vw-20px)] max-w-[361px]
+rounded-2xl border border-gray-200 bg-white shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark overflow-hidden
+">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700">
           <div className="flex items-center gap-2">

@@ -62,7 +62,7 @@ export default function AdminForm({
             </span>
             <input
               type="text"
-              placeholder="e.g. John Doe"
+              placeholder="admin..."
               value={newAdmin.name}
               onChange={(e) => setNewAdmin({ ...newAdmin, name: e.target.value })}
               className="w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#12033A] dark:focus:border-indigo-500 transition-colors"
@@ -82,7 +82,7 @@ export default function AdminForm({
             </span>
             <input
               type="email"
-              placeholder="admin@company.com"
+              placeholder="admin@gmail.com"
               value={newAdmin.email}
               onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
               className="w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#12033A] dark:focus:border-indigo-500 transition-colors"
