@@ -40,9 +40,8 @@ const navItems: NavItem[] = [
     path: "/settings",
   },
 ];
-
 const Sidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, } = useSidebar();
+  const { isExpanded, isMobileOpen, toggleMobileSidebar } = useSidebar();
   const location = useLocation();
 
   const isActive = useCallback(
@@ -51,32 +50,27 @@ const Sidebar: React.FC = () => {
   );
 
   const renderMenuItems = (items: NavItem[]) => (
-    <ul className="flex flex-col gap-4">
-      {items.map((nav) => (
-        <li key={nav.name}>
-          {nav.path && (
-            <Link
-              to={nav.path}
-              className={`menu-item group ${isActive(nav.path) ? "menu-item-active dark:menu-item-active-dark" : "menu-item-inactive"
-                }`}
-            >
-              <span
-                className={`menu-item-icon-size ${isActive(nav.path)
-                  ? "menu-item-icon-active"
-                  : "menu-item-icon-inactive"
-                  }`}
-              >
-                {nav.icon}
-              </span>
-              {(isExpanded || isMobileOpen) && (
-                <span className="menu-item-text">{nav.name}</span>
-              )}
-            </Link>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
+  <ul className="flex flex-col gap-4">
+    {items.map((nav) => (
+      <li key={nav.name}>
+        {nav.path && (
+          <Link
+            to={nav.path}
+            onClick={() => { if (isMobileOpen) toggleMobileSidebar(); }}
+            className={`menu-item group ${isActive(nav.path) ? "menu-item-active dark:menu-item-active-dark" : "menu-item-inactive"}`}
+          >
+            <span className={`menu-item-icon-size ${isActive(nav.path) ? "menu-item-icon-active" : "menu-item-icon-inactive"}`}>
+              {nav.icon}
+            </span>
+            {(isExpanded || isMobileOpen) && (
+              <span className="menu-item-text">{nav.name}</span>
+            )}
+          </Link>
+        )}
+      </li>
+    ))}
+  </ul>
+);
 
   const { admin } = useAdmin();
   const filteredNavItems = navItems.filter((item) => {
@@ -87,19 +81,14 @@ const Sidebar: React.FC = () => {
   });
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 start-0 h-screen
-layout-surface border-e border-r
-transition-transform duration-300
-
-${isExpanded ? "w-[290px]" : "w-[90px]"}
-
-${isMobileOpen
-  ? "translate-x-0"
-  : "-translate-x-full lg:translate-x-0"
-}
-`}
-      onMouseEnter={() => !isExpanded}
-    >
+  className={`fixed top-0 start-0 h-screen z-50
+    layout-surface border-e border-r
+    transition-all duration-300
+    ${isExpanded ? "w-[290px]" : "w-[90px]"}
+    ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+    pt-16 lg:pt-0
+  `}
+>
       <div
         className={`py-8 flex items-center ${!isExpanded
           ? "lg:justify-center"
