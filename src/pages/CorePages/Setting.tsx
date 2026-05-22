@@ -101,12 +101,12 @@ export default function Settings() {
   }, []);
 
   const filtered = logs
-    .filter((l) => filter === "All" || l.status === filter)
-    .filter((l) =>
-      l.action.toLowerCase().includes(search.toLowerCase()) ||
-      l.description.toLowerCase().includes(search.toLowerCase()) ||
-      l.ip_address.includes(search)
-    );
+  .filter((l) => filter === "All" || l.status === filter)
+  .filter((l) =>
+    l.action?.toLowerCase().includes(search.toLowerCase()) ||
+    l.description?.toLowerCase().includes(search.toLowerCase()) ||
+    l.ip_address?.includes(search)
+  );
 
   const stats = {
     total:     logs.length,
