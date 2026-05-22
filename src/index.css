@@ -1,8 +1,8 @@
-@source "../src/**/*.{ts,tsx}";
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap")
 layer(base);
 
 @import "tailwindcss";
+@source "../src/**/*.{ts,tsx}";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -267,7 +267,8 @@ layer(base);
   }
 
   body {
-    @apply relative bg-gray-50 font-normal font-outfit;
+    @apply relative bg-gray-50 font-outfit;
+  font-weight: 400;
   }
 
   button:not(:disabled),
