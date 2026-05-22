@@ -1,129 +1,79 @@
-
-
 import { Dropdown } from "../Dropdown";
 import { DropdownItem } from "../DropdownItem";
-
-
-import { Search, Filter, FileText, Plus } from "lucide-react";
+import { Search, Filter, FileText } from "lucide-react";
 
 type SortType = "all" | "state" | "sender" | "receiver";
+
 interface Props {
-    searchTerm: string;
-    setSearchTerm: (value: string) => void;
-
-    onFilterClick: () => void;
-    activeSort: string;
-
-    isFilterOpen: boolean; 
-    closeFilterDropdown: () => void; 
-
-    onSort: (value: SortType) => void;
-
-    onReportClick: () => void;
-    onAddClick: () => void;
+  searchTerm: string;
+  setSearchTerm: (value: string) => void;
+  onFilterClick: () => void;
+  activeSort: string;
+  isFilterOpen: boolean;
+  closeFilterDropdown: () => void;
+  onSort: (value: SortType) => void;
+  onReportClick: () => void;
 }
 
 export default function TransactionToolbar({
-    searchTerm,
-    setSearchTerm,
-    onFilterClick,
-    activeSort,
-    isFilterOpen,
-    closeFilterDropdown,
-    onSort,
-    onReportClick,
-    onAddClick,
+  searchTerm,
+  setSearchTerm,
+  onFilterClick,
+  activeSort,
+  isFilterOpen,
+  closeFilterDropdown,
+  onSort,
+  onReportClick,
 }: Props) {
-    return (
-        <div className="flex items-center gap-3">
-            {/* Search Input */}
-            <div className="relative">
-                <Search
-                    size={18}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-                <input
-                    type="text"
-                    placeholder="Search by name..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm font-medium text-gray-700 shadow-theme-xs placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:placeholder:text-gray-500"
-                />
-            </div>
-            <div className="relative">
-                <button
-                    onClick={onFilterClick}
-                    className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                >
-                    <Filter size={18} />
-                    Filter: {activeSort}
-                </button>
-
-                <Dropdown
-                    isOpen={isFilterOpen}
-                    onClose={closeFilterDropdown}
-                    className="absolute right-0 mt-2 w-48 flex flex-col gap-1 rounded-xl border border-gray-200 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                >
-                    <DropdownItem
-                        onItemClick={() => {
-                            onSort("all");
-                            closeFilterDropdown();
-                        }}
-                        className={`px-3 py-2 rounded-lg transition hover:bg-gray-100 ${activeSort === "all" ? "bg-gray-100 font-semibold" : ""
-                            }`}
-                    >
-                        All
-                    </DropdownItem>
-
-                    <DropdownItem
-                        onItemClick={() => {
-                            onSort("state");
-                            closeFilterDropdown();
-                        }}
-                        className={`px-3 py-2 rounded-lg transition hover:bg-gray-100 ${activeSort === "state" ? "bg-gray-100 font-semibold" : ""
-                            }`}
-                    >
-                        State
-                    </DropdownItem>
-
-                    <DropdownItem
-                        onItemClick={() => {
-                            onSort("sender");
-                            closeFilterDropdown();
-                        }}
-                        className={`px-3 py-2 rounded-lg transition hover:bg-gray-100 ${activeSort === "sender" ? "bg-blue-100 text-blue-700 font-semibold" : ""
-                            }`}
-                    >
-                        Sender
-                    </DropdownItem>
-
-                    <DropdownItem
-                        onItemClick={() => {
-                            onSort("receiver");
-                            closeFilterDropdown();
-                        }}
-                        className={`px-3 py-2 rounded-lg transition hover:bg-gray-100 ${activeSort === "receiver" ? "bg-gray-100 font-semibold" : ""
-                            }`}
-                    >
-                        Receiver
-                    </DropdownItem>
-                </Dropdown>
-
-            </div>
-
-            <button
-                onClick={onReportClick}
-                className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-                <FileText size={18} />
-                Report
-            </button>
-            <button
-                onClick={onAddClick}
-                className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {/* Search */}
+      <div className="relative w-full sm:w-48">
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9B9B9F]" />
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full rounded-lg border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-white/[0.03] py-2 pl-9 pr-3 text-sm text-[#12033A] dark:text-[#EDEDED] placeholder:text-[#9B9B9F] focus:outline-none focus:border-[#12033A] dark:focus:border-[#F3F4F6] transition-colors"
+        />
+      </div>
+      {/* Filter */}
+      <div className="relative">
+        <button
+          onClick={onFilterClick}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-white/[0.03] px-3 py-2 text-sm text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors"
+        >
+          <Filter size={15} />
+          <span className="hidden sm:inline">Filter: {activeSort}</span>
+        </button>
+        <Dropdown
+          isOpen={isFilterOpen}
+          onClose={closeFilterDropdown}
+          className="absolute right-0 mt-2 w-44 flex flex-col gap-0.5 rounded-xl border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-[#1E1E1E] p-1.5 shadow-lg z-10"
+        >
+          {(["all", "state", "sender", "receiver"] as SortType[]).map((sort) => (
+            <DropdownItem
+              key={sort}
+              onItemClick={() => { onSort(sort); closeFilterDropdown(); }}
+              className={`px-3 py-2 rounded-lg text-sm transition capitalize ${activeSort === sort
+                  ? "bg-[#DBDDFF] text-[#12033A] font-medium"
+                  : "text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5"
+                }`}
             >
-                <Plus size={18} />
-                Add Transaction
-            </button>
-        </div >
-    )
+              {sort === "all" ? "All" : sort === "state" ? "State" : sort === "sender" ? "Sender" : "Receiver"}
+            </DropdownItem>
+          ))}
+        </Dropdown>
+      </div>
+      {/* Report */}
+      <button
+        onClick={onReportClick}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-white/[0.03] px-3 py-2 text-sm text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors"
+      >
+        <FileText size={15} />
+        <span className="hidden sm:inline">Report</span>
+      </button>
+    </div>
+  );
 }

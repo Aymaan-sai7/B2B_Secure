@@ -7,17 +7,17 @@ import Backdrop from "./Backdrop";
 import Sidebar from "./Sidebar";
 
 const LayoutContent: React.FC = () => {
-  const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+  const { isExpanded, isMobileOpen } = useSidebar();
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-950 xl:flex">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-950 xl:flex  transition-transition-[background-color,color,border-color,box-shadow] duration-600 ease-in-out">
       <div>
         <Sidebar />
         <Backdrop />
       </div>
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
-          isExpanded || isHovered ? "lg:ms-[290px]" : "lg:ms-[90px]"
+          isExpanded  ? "lg:ms-[290px]" : "lg:ms-[90px]"
         } ${isMobileOpen ? "ms-0" : ""}`}
       >
         <Header />

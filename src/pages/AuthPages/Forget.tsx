@@ -8,9 +8,7 @@ export default function Forget() {
         title="Forget pass"
         description="This is forget"
       />
-      {/* <AuthLayout> */}
         <ForgetForm />
-      {/* </AuthLayout> */}
     </>
   );
 }

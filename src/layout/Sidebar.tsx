@@ -9,14 +9,10 @@ import {
 } from "lucide-react";
 import { useSidebar } from "../context/SidebarContext";
 import { useLanguage } from "../context/LanguageContext";
+import { useAdmin } from "../context/AdminContext";
+import { isSuperAdmin } from "../permissions/permissions";
+import { NavItem } from "../interfaces/Sidebar";
 
-
-
-type NavItem = {
-  name: string;
-  icon: React.ReactNode;
-  path?: string;
-};
 
 const navItems: NavItem[] = [
   {
@@ -41,13 +37,13 @@ const navItems: NavItem[] = [
   },
   {
     icon: <Settings />,
-    name: "System setting",
+    name: "System Setting",
     path: "/settings",
   },
 ];
 
 const Sidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isExpanded, isMobileOpen, } = useSidebar();
   const location = useLocation();
 
   const isActive = useCallback(
@@ -62,18 +58,18 @@ const Sidebar: React.FC = () => {
           {nav.path && (
             <Link
               to={nav.path}
-              className={`menu-item group ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
+              className={`menu-item group ${isActive(nav.path) ? "menu-item-active dark:menu-item-active-dark" : "menu-item-inactive"
                 }`}
             >
               <span
                 className={`menu-item-icon-size ${isActive(nav.path)
-                    ? "menu-item-icon-active"
-                    : "menu-item-icon-inactive"
+                  ? "menu-item-icon-active"
+                  : "menu-item-icon-inactive"
                   }`}
               >
                 {nav.icon}
               </span>
-              {(isExpanded || isHovered || isMobileOpen) && (
+              {(isExpanded || isMobileOpen) && (
                 <span className="menu-item-text">{nav.name}</span>
               )}
             </Link>
@@ -83,16 +79,21 @@ const Sidebar: React.FC = () => {
     </ul>
   );
 
-
   const { language } = useLanguage()
+  const { admin } = useAdmin();
+  const filteredNavItems = navItems.filter((item) => {
+    if (item.path === "/admins") {
+      return admin && isSuperAdmin(admin.roles);
+    }
+    return true;
+  });
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 start-0 bg-white/80 backdrop-blur-xl dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-e border-r border-gray-200
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 start-0 h-screen  bg-[#FFFFFF]/90 backdrop-blur-xl dark:bg-[#101010]/90 dark:border-[#5C5C5C] text-gray-900
+border-e border-r border-[#E7E6EB]
         ${isExpanded || isMobileOpen
           ? "w-[290px]"
-          : isHovered
-            ? "w-[290px]"
-            : "w-[90px]"
+          : "w-[90px]"
         }
         ${isMobileOpen
           ? "translate-x-0"
@@ -101,20 +102,19 @@ const Sidebar: React.FC = () => {
             : "-translate-x-full"
         }
         lg:translate-x-0`}
-      onMouseEnter={() => !isExpanded && setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => !isExpanded}
     >
       <div
-        className={`py-8 flex items-center ${!isExpanded && !isHovered
-            ? "lg:justify-center"
-            : "justify-start gap-3"
+        className={`py-8 flex items-center ${!isExpanded
+          ? "lg:justify-center"
+          : "justify-start gap-3"
           }`}
       >
         <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 shadow-lg">
           <span className="text-xl font-bold text-white">B2B</span>
         </div>
 
-        {(isExpanded || isHovered || isMobileOpen) && (
+        {(isExpanded || isMobileOpen) && (
           <div className="flex flex-col">
             <h1 className="text-lg font-bold text-gray-900 dark:text-white">
               B2B Secure
@@ -130,7 +130,7 @@ const Sidebar: React.FC = () => {
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
-              {renderMenuItems(navItems)}
+              {renderMenuItems(filteredNavItems)}
             </div>
           </div>
         </nav>

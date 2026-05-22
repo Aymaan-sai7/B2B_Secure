@@ -1,80 +1,96 @@
-import { Building2, CreditCard, CheckCircle, Clock } from "lucide-react";
+import { Building2, CreditCard, ShieldAlert, Clock } from "lucide-react";
+import { DashboardSummary } from "../../services/DashboardService";
 
-export default function Metrics() {
+interface Props {
+  data: DashboardSummary | null;
+  loading: boolean;
+}
+
+// ── Metric Card ────────────────────────────────────────────────────────────────
+
+function MetricCard({
+  icon,
+  label,
+  value,
+  iconBg,
+  iconColor,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+  iconBg: string;
+  iconColor: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-[#E7E6EB] bg-[#FFFFFF] p-5 dark:border-[#5C5C5C] dark:bg-white/[0.03] md:p-6">
+      <div
+        className="flex items-center justify-center w-12 h-12 rounded-xl"
+        style={{ backgroundColor: iconBg, color: iconColor }}
+      >
+        {icon}
+      </div>
+      <div className="mt-5">
+        <span className="text-sm" style={{ color: iconColor }}>{label}</span>
+        <h4 className="mt-2 font-bold text-2xl text-[#12033A] dark:text-[#F3F4F6]">{value}</h4>
+      </div>
+    </div>
+  );
+}
+
+// ── Main ───────────────────────────────────────────────────────────────────────
+
+export default function Metrics({ data, loading }: Props) {
+
+  // Skeleton
+  if (loading || !data) {
+    return (
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="h-32 rounded-2xl bg-[#F1F3FA] dark:bg-white/5 animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-      {/* <!-- Metric Item Start --> */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500">
-          <Building2 className=" text-success-600  dark:text-success-500" />
-        </div>
 
-        <div className="flex items-end justify-between mt-5">
-          <div>
-            <span className="text-sm  text-success-600  dark:text-success-500">
-              Companies
-            </span>
-            <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              3,782
-            </h4>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Metric Item End --> */}
+      {/* Total Companies */}
+      <MetricCard
+        icon={<Building2 size={22} />}
+        label="Companies"
+        value={data.companies.total}
+        iconBg="#D8FFF1"
+        iconColor="#04BE7B"
+      />
 
-      {/* <!-- Metric Item Start --> */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400">
-          <CreditCard className=" text-brand-500  dark:text-brand-400 size-6" />
-        </div>
-        <div className="flex items-end justify-between mt-5">
-          <div>
-            <span className="text-sm  text-brand-500  dark:text-brand-400">
-              Transactions
-            </span>
-            <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
-            </h4>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Metric Item End --> */}
+      {/* Total Transactions */}
+      <MetricCard
+        icon={<CreditCard size={22} />}
+        label="Transactions"
+        value={data.transactions.total_count}
+        iconBg="#E1E3FF"
+        iconColor="#0047FF"
+      />
 
-      {/* <!-- Metric Item Start --> */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500">
-          <CheckCircle className=" text-success-600 dark:text-success-500" />
-        </div>
-        <div className="flex items-end justify-between mt-5">
-          <div>
-            <span className="text-sm  text-success-600  dark:text-success-500">
-              T.Completed
-            </span>
-            <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              8,432
-            </h4>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Metric Item End --> */}
+      {/* Pending Companies */}
+      <MetricCard
+        icon={<Clock size={22} />}
+        label="Pending Companies"
+        value={data.companies.pending}
+        iconBg="#FFFCF1"
+        iconColor="#E2AE21"
+      />
 
-      {/* <!-- Metric Item Start --> */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400">
-          <Clock className=" text-warning-600 dark:text-orange-400" />
-        </div>
-        <div className="flex items-end justify-between mt-5">
-          <div>
-            <span className="text-sm  text-warning-600  dark:text-orange-400">
-              T.Pending
-            </span>
-            <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              1,127
-            </h4>
-          </div>
-        </div>
-      </div>
-      {/* <!-- Metric Item End --> */}
+      {/* Fraud Rate */}
+      <MetricCard
+        icon={<ShieldAlert size={22} />}
+        label="Fraud Rate"
+        value={`${data.transactions.fraud_rate.toFixed(1)}%`}
+        iconBg="#FEDEDF"
+        iconColor="#FF4951"
+      />
+
     </div>
   );
 }

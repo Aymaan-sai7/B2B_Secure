@@ -9,7 +9,6 @@ export default function BarChart() {
         title="React.js Chart Dashboard"
         description="This is React.js Chart Dashboard "
       />
-      {/* <PageBreadcrumb pageTitle="Bar Chart" /> */}
       <div className="space-y-6">
         <ComponentCard title="Bar Chart 1">
           <BarChartOne />

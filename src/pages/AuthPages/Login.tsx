@@ -8,9 +8,7 @@ export default function Login() {
         title="Login"
         description="This is Login"
       />
-      {/* <AuthLayout> */}
-        <LoginForm />
-      {/* </AuthLayout> */}
+      <LoginForm />
     </>
 
   );

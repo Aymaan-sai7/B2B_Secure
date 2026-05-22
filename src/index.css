@@ -129,11 +129,22 @@ layer(base);
   --color-warning-500: #f79009;
   --color-warning-600: #dc6803;
   --color-warning-700: #b54708;
-  --color-warning-800: #93370d;
-  --color-warning-900: #7a2e0e;
-  --color-warning-950: #4e1d09;
 
-  --color-theme-pink-500: #ee46bc;
+  --color-primary: #12033A;
+  --color-inactive: #9197B3;
+  
+
+  --color-pending: #FCFFCD;
+  --color-t-pending: #D2D200;
+
+  --color-error+: #FEDEDF;
+  --color-t-error+: #FF0004;
+
+    --color-t-complete: #04BE7B;
+  --color-complete: #D8FFF1;
+
+
+
 
   --color-theme-purple-500: #7a5af8;
 
@@ -165,6 +176,88 @@ layer(base);
   --z-index-999999: 999999;
 }
 
+:root {
+  --color-primary:            #12033A;
+  --color-secondary:          #0047FF;
+  --color-background:         #FFFFFF;
+  --color-surface:            #F1F3FA;
+
+  --color-onBackground:       #12033A;
+  --color-onSurface:          #12033A;
+  --color-onSurfaceVariant:   #DBDDFF;
+  --color-onPrimary:          #FFFFFF;
+  --color-onSecondary:        #FFFFFF;
+  --color-onTertiary:         #FFFFFF;
+
+  --color-outline:            #E7E6EB;
+  --color-outlineVariant:     #777777;
+  --color-tertiary:           #9B9B9F;
+
+  --color-successContainer:   #D8FFF1;
+  --color-onSuccessContainer: #04BE7B;
+
+  --color-errorContainer:     #FEDEDF;
+  --color-onErrorContainer:   #FF4951;
+
+  --color-warningContainer:   #FFFCF1;
+  --color-onWarningContainer: #E2AE21;
+
+  --color-readContainer:      #F1F3FA;
+
+  --color-approvedTag:        #04BE7B;
+  --color-onApprovedTag:      #04BE7B;
+
+  --color-rejectedTag:        #FEDEDF;
+  --color-onRejectedTag:      #FF4951;
+
+  --color-pendingTag:         #FF4951;
+  --color-onPendingTag:       #E2AE21;
+
+  --color-infoTag:            #E1E3FF;
+  --color-onInfoTag:          #0047FF;
+}
+
+.dark {
+  --color-primary:            #F3F4F6;
+  --color-secondary:          #F3F4F6;
+  --color-background:         #101010;
+  --color-surface:            #1E1E1E;
+
+  --color-onBackground:       #F3F4F6;
+  --color-onSurface:          #EDEDED;
+  --color-onSurfaceVariant:   #B3B3B8;
+  --color-onPrimary:          #0A0A0B;
+  --color-onSecondary:        #0A0A0B;
+  --color-onTertiary:         #9B9B9F;
+
+  --color-outline:            #5C5C5C;
+  --color-outlineVariant:     #9B9B9F;
+  --color-tertiary:           #5C5C5C;
+
+  --color-successContainer:   #0F2A22;
+  --color-onSuccessContainer: #3DDC97;
+
+  --color-errorContainer:     #2A1719;
+  --color-onErrorContainer:   #FF6B6B;
+
+  --color-warningContainer:   #2A2412;
+  --color-onWarningContainer: #FFD54A;
+
+  --color-readContainer:      #5C5C5C;
+
+  --color-approvedTag:        #0F2A22;
+  --color-onApprovedTag:      #3DDC97;
+
+  --color-rejectedTag:        #2A1719;
+  --color-onRejectedTag:      #FF6B6B;
+
+  --color-pendingTag:         #2A2412;
+  --color-onPendingTag:       #FFD54A;
+
+  --color-infoTag:            #0F1C2E;
+  --color-onInfoTag:          #4DA3FF;
+}
+
 @layer base {
   *,
   ::before,
@@ -187,11 +280,15 @@ layer(base);
 }
 
 @utility menu-item-active {
-  @apply bg-brand-50 text-brand-500;
+  @apply bg-primary text-white;
+}
+
+@utility menu-item-active-dark {
+  @apply bg-white text-[#12033A];
 }
 
 @utility menu-item-inactive {
-  @apply text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5;
+  @apply text-inactive hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5;
 }
 
 @utility menu-icon {
@@ -303,4 +400,16 @@ input[type="time"]::-webkit-inner-spin-button {
   background: transparent;
   border: none;
   color: black;
+}
+
+@layer components {
+  .table-text {
+    @apply text-[#12033A] dark:text-white;
+  }
+}
+
+@layer components {
+  .table-header {
+    @apply text-gray-500 dark:text-gray-400;
+  }
 }

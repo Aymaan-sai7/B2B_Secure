@@ -8,9 +8,7 @@ export default function Otp() {
         title="OTP"
         description="This is OTP"
       />
-      {/* <AuthLayout> */}
         <OtpForm />
-      {/* </AuthLayout> */}
     </>
   );
 }

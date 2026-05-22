@@ -31,14 +31,12 @@ api.interceptors.response.use(
   (response) => response,
 
   (error) => {
-    // Unauthorized
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
 
       window.location.href = "/login";
     }
 
-    // Server Error
     if (error.response?.status >= 500) {
       console.log("Server Error");
     }

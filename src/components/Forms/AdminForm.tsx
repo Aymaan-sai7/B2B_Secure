@@ -1,38 +1,15 @@
 import { useTranslation } from "react-i18next";
-import { AdminRole } from "../Data/dataAdmins";
-
-type AdminFormData = {
-  name: string;
-  email: string;
-  role: AdminRole;
-};
+import { AddAdminPayload } from "../../interfaces/Admin";
 
 interface Props {
-  newAdmin: AdminFormData;
-  setNewAdmin: React.Dispatch<React.SetStateAction<AdminFormData>>;
+  newAdmin: AddAdminPayload;
+  setNewAdmin: React.Dispatch<React.SetStateAction<AddAdminPayload>>;
   editingId: number | null;
   handleAdd: () => void;
   handleUpdate: () => void;
   onClose?: () => void;
+  submitting: boolean;
 }
-
-const Role: Record<
-  AdminRole,
-  { label: string; icon: string; activeClass: string }
-> = {
-  Admin: {
-    label: "Admin",
-    icon: "",
-    activeClass:
-      "border-purple-500 bg-purple-50 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-600",
-  },
-  Moderator: {
-    label: "Moderator",
-    icon: "",
-    activeClass:
-      "border-blue-400 bg-blue-50 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-500",
-  }
-};
 
 export default function AdminForm({
   newAdmin,
@@ -41,11 +18,12 @@ export default function AdminForm({
   handleAdd,
   handleUpdate,
   onClose,
+  submitting,
 }: Props) {
   const { t } = useTranslation();
   const isEditing = editingId !== null;
   const isFormValid =
-    newAdmin.name.trim() !== "" && newAdmin.email.trim() !== "";
+    newAdmin.name.trim() !== "" && newAdmin.email.trim() !== "" && newAdmin.password.trim() !== "";
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -114,37 +92,27 @@ export default function AdminForm({
 
         <div>
           <label className="block text-sm text-gray-500 dark:text-gray-400 mb-1.5">
-            Role
+            Password
           </label>
-          <div className="grid grid-cols-3 gap-2">
-            {(Object.keys(Role) as AdminRole[]).map((role) => {
-              const config = Role[role];
-              const isActive = newAdmin.role === role;
-              return (
-                <button
-                  key={role}
-                  type="button"
-                  onClick={() => setNewAdmin({ ...newAdmin, role })}
-                  className={`
-                    flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-sm font-medium
-                    border transition-all duration-150
-                    ${
-                      isActive
-                        ? config.activeClass
-                        : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    }
-                  `}
-                >
-                  <span className="text-xs">{config.icon}</span>
-                  {config.label}
-                </button>
-              );
-            })}
+
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2h-1V9a5 5 0 00-10 0v2H6a2 2 0 00-2 2v6a2 2 0 002 2zm3-10V9a3 3 0 016 0v2H9z" />
+              </svg>
+            </span>
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={newAdmin.password}
+              onChange={(e) =>
+                setNewAdmin({ ...newAdmin, password: e.target.value, })}
+              className="w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#12033A] dark:focus:border-indigo-500 transition-colors"
+            />
           </div>
         </div>
       </div>
 
-      {/* Actions */}
       <div className="flex gap-2 mt-6">
         {onClose && (
           <button
@@ -158,7 +126,7 @@ export default function AdminForm({
         <button
           type="button"
           onClick={isEditing ? handleUpdate : handleAdd}
-          disabled={!isFormValid}
+          disabled={!isFormValid || submitting}
           className="flex-[2] py-2.5 px-4 rounded-lg text-sm font-medium text-white bg-[#12033A] hover:bg-[#1e0a5e] transition-colors flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {!isEditing && (
@@ -166,7 +134,7 @@ export default function AdminForm({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
           )}
-          {isEditing ? t("update") : t("add")}
+          {submitting ? "Saving..." : isEditing ? t("update") : t("add")}
         </button>
       </div>
 

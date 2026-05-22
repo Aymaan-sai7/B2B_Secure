@@ -10,7 +10,6 @@ export default function LineChart() {
         title="React.js Chart Dashboard"
         description="This is React.js Chart"
       />
-      {/* <PageBreadcrumb pageTitle="Line Chart" /> */}
       <div className="space-y-6">
         <ComponentCard title="Line Chart 1">
           <Line />

@@ -1,65 +1,75 @@
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
-interface LineSeries {
-  name: string;
+// ── Types ──────────────────────────────────────────────────────────────────────
+
+interface Dataset {
+  label: string;
   data: number[];
-  color: string;
-  description: string; 
+  borderColor?: string;
 }
 
 interface LineChartProps {
-  series?: LineSeries[];
-  categories?: string[];
+  labels?: string[];
+  datasets?: Dataset[];
   title?: string;
   subtitle?: string;
 }
 
-const DEFAULT_SERIES: LineSeries[] = [
-  {
-    name: "Sales",
-    data: [180, 190, 170, 160, 175, 165, 170, 205],
-    color: "#12033A",
-    description: "Total sales value in USD",
-  },
-  {
-    name: "Revenue",
-    data: [40, 30, 50, 40, 55, 40, 70, 100],
-    color: "#9CB9FF",
-    description: "Net revenue after deductions",
-  },
-];
+// ── Color helper ───────────────────────────────────────────────────────────────
 
-const DEFAULT_CATEGORIES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
+function css(variable: string): string {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(variable)
+    .trim();
+}
+
+function getChartColors() {
+  return {
+    primary: css("--color-secondary"),
+  };
+}
+
+// ── Defaults ───────────────────────────────────────────────────────────────────
+
+const DEFAULT_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+
+// ── Component ──────────────────────────────────────────────────────────────────
 
 export default function LineChart({
-  series = DEFAULT_SERIES,
-  categories = DEFAULT_CATEGORIES,
-  title = "Sales vs Revenue",
-  subtitle = "Performance comparison over time",
+  labels   = DEFAULT_LABELS,
+  datasets,
+  title    = "Transaction Trends",
+  subtitle = "Total transactions over time",
 }: LineChartProps) {
-  const totals = series.map((s) => ({
-    name: s.name,
-    color: s.color,
-    description: s.description,
-    total: s.data.reduce((a, b) => a + b, 0),
-    latest: s.data[s.data.length - 1],
-    prev: s.data[s.data.length - 2],
-  }));
+
+  const c = getChartColors();
+
+  const resolvedDatasets: Dataset[] = datasets ?? [
+    { label: "Total Transactions", data: [0,0,0,0,0,0], borderColor: c.primary },
+  ];
+
+  const seriesStats = resolvedDatasets.map((d) => {
+    const total  = d.data.reduce((a, b) => a + b, 0);
+    const latest = d.data.at(-1) ?? 0;
+    const prev   = d.data.at(-2) ?? 0;
+    const growth = prev > 0 ? Number((((latest - prev) / prev) * 100).toFixed(1)) : null;
+    return { ...d, total, growth };
+  });
 
   const options: ApexOptions = {
     legend: { show: false },
-    colors: series.map((s) => s.color),
+    colors: resolvedDatasets.map((d) => d.borderColor || c.primary),
     chart: {
       fontFamily: "Inter, sans-serif",
       type: "line",
       toolbar: { show: false },
       animations: { enabled: true, speed: 600 },
     },
-    stroke: { curve: "smooth", width: series.map(() => 2) },
+    stroke: { curve: "smooth", width: resolvedDatasets.map(() => 2) },
     fill: {
       type: "gradient",
-      gradient: { opacityFrom: 0.45, opacityTo: 0 },
+      gradient: { opacityFrom: 0.4, opacityTo: 0 },
     },
     markers: {
       size: 0,
@@ -70,114 +80,74 @@ export default function LineChart({
     grid: {
       xaxis: { lines: { show: false } },
       yaxis: { lines: { show: true } },
-      borderColor: "#F3F4F6",
+      borderColor: "#E7E6EB",
     },
     dataLabels: { enabled: false },
     tooltip: {
       enabled: true,
-      y: { formatter: (val: number) => `$${val.toLocaleString()}` },
+      y: { formatter: (val: number) => `${val.toLocaleString()} transactions` },
     },
     xaxis: {
       type: "category",
-      categories,
+      categories: labels,
       axisBorder: { show: false },
       axisTicks: { show: false },
-      labels: { style: { fontSize: "12px", colors: "#9CA3AF" } },
+      labels: { style: { fontSize: "12px", colors: "#9B9B9F" } },
       tooltip: { enabled: false },
     },
     yaxis: {
-      labels: {
-        style: { fontSize: "12px", colors: ["#9CA3AF"] },
-        formatter: (val: number) => `$${val}`,
-      },
+      labels: { style: { fontSize: "12px", colors: ["#9B9B9F"] } },
     },
   };
 
-  const apexSeries = series.map((s) => ({ name: s.name, data: s.data }));
+  const series = resolvedDatasets.map((d) => ({ name: d.label, data: d.data }));
 
   return (
-    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03] p-5">
+    <div className="rounded-2xl border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-white/[0.03] p-5">
+
+      {/* Header */}
       <div className="mb-4">
-        <h3 className="text-base font-semibold text-gray-800 dark:text-white">
-          {title}
-        </h3>
-        <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">
-          {subtitle}
-        </p>
+        <h3 className="text-base font-semibold text-[#12033A] dark:text-[#F3F4F6]">{title}</h3>
+        <p className="text-sm text-[#9B9B9F] mt-0.5">{subtitle}</p>
       </div>
 
-      <div className="flex items-center gap-6 mb-4 flex-wrap">
-        {totals.map((t, i) => {
-          const growth = t.prev > 0 ? ((t.latest - t.prev) / t.prev) * 100 : 0;
-          const isUp = growth >= 0;
-          return (
-            <div key={i} className="flex items-center gap-3">
-              <span
-                className="w-3 h-3 rounded-full flex-shrink-0"
-                style={{ backgroundColor: t.color }}
-              />
-              <div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">
-                  {t.name}
+      {/* Stats row */}
+      <div className="flex flex-wrap items-center gap-6 mb-4">
+        {seriesStats.map((s, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: s.borderColor || c.primary }} />
+            <div>
+              <p className="text-xs text-[#9B9B9F] mb-0.5">{s.label}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-lg font-bold text-[#12033A] dark:text-[#F3F4F6]">
+                  {s.total.toLocaleString()}
                 </p>
-                <div className="flex items-center gap-2">
-                  <p className="text-lg font-bold text-gray-800 dark:text-white">
-                    ${t.total.toLocaleString()}
-                  </p>
-                  <span
-                    className={`text-xs font-medium ${
-                      isUp ? "text-green-600" : "text-red-500"
-                    }`}
-                  >
-                    {isUp ? "▲" : "▼"} {Math.abs(growth).toFixed(1)}%
+                {s.growth !== null && (
+                  <span className={`text-xs font-medium ${s.growth >= 0 ? "text-[#04BE7B]" : "text-[#FF4951]"}`}>
+                    {s.growth >= 0 ? "▲" : "▼"} {Math.abs(s.growth)}%
                   </span>
-                </div>
+                )}
               </div>
-              {i < totals.length - 1 && (
-                <div className="w-px h-8 bg-gray-200 dark:bg-gray-700 ml-3" />
-              )}
             </div>
-          );
-        })}
-      </div>
-      <div className="w-full">
-        <Chart options={options} series={apexSeries} type="area" height={280} />
+            {i < seriesStats.length - 1 && (
+              <div className="w-px h-8 bg-[#E7E6EB] dark:bg-[#5C5C5C] ml-3" />
+            )}
+          </div>
+        ))}
       </div>
 
-      <div className="flex flex-wrap items-center gap-4 mt-3 pt-3 border-t border-gray-100 dark:border-gray-800">
-        {totals.map((t, i) => (
+      {/* Chart */}
+      <Chart options={options} series={series} type="area" height={260} />
+
+      {/* Legend */}
+      <div className="flex flex-wrap items-center gap-4 mt-3 pt-3 border-t border-[#E7E6EB] dark:border-[#5C5C5C]">
+        {resolvedDatasets.map((d, i) => (
           <div key={i} className="flex items-center gap-2">
-            <span
-              className="w-8 h-0.5 inline-block rounded-full"
-              style={{ backgroundColor: t.color }}
-            />
-            <span className="text-xs text-gray-500 dark:text-gray-400">
-              <span className="font-medium text-gray-700 dark:text-gray-300">
-                {t.name}
-              </span>{" "}
-              — {t.description}
-            </span>
+            <span className="w-8 h-0.5 inline-block rounded-full" style={{ backgroundColor: d.borderColor || c.primary }} />
+            <span className="text-xs text-[#9B9B9F]">{d.label}</span>
           </div>
         ))}
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

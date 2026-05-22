@@ -9,7 +9,6 @@ export default function PieChart() {
         title="React.js Chart Dashboard"
         description="This is React.js Chart"
       />
-      {/* <PageBreadcrumb pageTitle="Pie Chart" /> */}
       <div className="space-y-6">
         <ComponentCard title="Pie Chart 1">
           <Pie />

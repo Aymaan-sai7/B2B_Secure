@@ -1,201 +1,148 @@
 import { loginAPI } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
-
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
-
-import { useEffect } from "react";
 import axios from "axios";
 import { ApiError } from "../../interfaces/apiError";
 import { enqueueSnackbar } from "notistack";
+import { useAdmin } from "../../context/AdminContext";
+
+const isValidEmail    = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+const isValidPassword = (v: string) => /^(?=.{8,16}$).*$/.test(v);
 
 export default function LoginForm() {
-
-  const [loading, setLoading] = useState(false);
-
-  const isValidEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-  const isValidPassword = (password: string) => {
-    const regex = /^(?=.{8,16}$).*$/;
-    return regex.test(password);
-  };
-
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
-
+  const navigate = useNavigate();
+  const [email, setEmail]               = useState("");
+  const [password, setPassword]         = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isChecked, setIsChecked]       = useState(false);
+  const [loading, setLoading]           = useState(false);
+  const [errors, setErrors]             = useState({ email: "", password: "" });
+  const { refreshAdmin } = useAdmin();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/");
+  }, [navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
-    console.log({
-      email,
-      password,
-    });
     e.preventDefault();
     setErrors({ email: "", password: "" });
     let hasError = false;
 
     if (!email) {
-      setErrors((prev) => ({ ...prev, email: "Email is required" }));
+      setErrors((p) => ({ ...p, email: "Email is required" }));
       hasError = true;
     } else if (!isValidEmail(email)) {
-      setErrors((prev) => ({ ...prev, email: "Invalid email format" }));
+      setErrors((p) => ({ ...p, email: "Invalid email format" }));
       hasError = true;
     }
     if (!password) {
-      setErrors((prev) => ({ ...prev, password: "Password is required" }));
+      setErrors((p) => ({ ...p, password: "Password is required" }));
       hasError = true;
     } else if (!isValidPassword(password)) {
-      setErrors((prev) => ({
-        ...prev,
-        password: "8-16 chars + at least 1 number",
-      }));
+      setErrors((p) => ({ ...p, password: "8-16 chars + at least 1 number" }));
       hasError = true;
     }
     if (hasError) return;
 
     try {
       setLoading(true);
-
       const res = await loginAPI({ email, password });
-      console.log("LOGIN RESPONSE:", res);
-
       localStorage.setItem("token", res.access_token);
       enqueueSnackbar("Login successful", { variant: "success" });
+      await refreshAdmin();
       navigate("/");
     } catch (error) {
       let message = "Invalid email or password";
       if (axios.isAxiosError<ApiError>(error)) {
         message = error.response?.data?.message || message;
       }
-      setErrors({
-        email: "",
-        password: message,
-      });
+      setErrors({ email: "", password: message });
     } finally {
       setLoading(false);
     }
   };
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/");
-    }
-  }, [navigate]);
+  const clearErrors = () => setErrors({ email: "", password: "" });
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center">
-      <div className=" mt-[50px] sm:mb-8">
-        <h1 className="font-bold text-[60px] text-black whitespace-nowrap w-fit mx-auto font-['Inter']">
-          Login
-        </h1>
-      </div>
-      <div className="flex flex-col justify-center flex-1 w-full max-w-lg mx-auto">
-        <div>
-          <div>
-            <form onSubmit={handleLogin}>
-              <div className=" mt-[50px] space-y-6">
-                <div>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      if (errors.email || errors.password) {
-                        setErrors((p) => ({
-                          ...p,
-                          email: "",
-                          password: "",
-                        }));
-                      }
-                    }}
-                    className="h-14 text-base"
-                    placeholder="Email"
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-xs mt-1 animate-fade-in">
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <div className=" space-y-1 relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        if (errors.password || errors.email)
-                          setErrors((p) => ({ ...p, password: "" }));
-                      }}
-                      placeholder="Password"
-                      className="h-14 text-base"
-                    />
-                    {errors.password && (
-                      <p className="text-red-500 text-xs mt-1 animate-fade-in">
-                        {errors.password}
-                      </p>
-                    )}
+    <div className="min-h-screen flex items-center justify-center bg-[#FFFFFF] dark:bg-[#101010] px-4">
+      <div className="w-full max-w-md">
 
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute z-30 cursor-pointer right-4 top-[20px] flex items-center"
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="fill-black dark:fill-gray-400 size-5" />
-                      ) : (
-                        <EyeCloseIcon className="fill-black dark:fill-gray-400 size-5" />
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between ">
-                  <div className="flex items-center gap-3">
-                    <Checkbox
-                      className="text-black checked:bg-black checked:border-black"
-                      checked={isChecked}
-                      onChange={setIsChecked}
-                      id="remember"
-                    />
-                    <span className="block font-normal text-black text-theme-sm">
-                      Remember me
-                    </span>
-                  </div>
-                  <Link
-                    to="/forget"
-                    className="text-sm text-[#0047FF] hover:text-blue-700"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-                <div>
-                  <Button
-                    type="submit"
-                    disabled={
-                      loading || !email || !password || !isValidEmail(email)
-                    }
-                    className="w-full h-14 text-base mt-[50px] bg-[#12033A] hover:bg-[#12093A] text-white"
-                    size="sm"
-                  >
-                    {loading ? "Logging in..." : "Login"}
-                  </Button>
-                </div>
-              </div>
-            </form>
+        {/* Brand */}
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 rounded-xl bg-[#12033A] flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
           </div>
+          <h1 className="text-2xl font-semibold text-[#12033A] dark:text-[#F3F4F6]">Welcome back</h1>
+          <p className="text-sm text-[#9B9B9F] mt-1">Login to your admin dashboard</p>
         </div>
+
+        {/* card */}
+        <div className="bg-[#FFFFFF] dark:bg-white/[0.03] border border-[#E7E6EB] dark:border-[#5C5C5C] rounded-2xl px-8 py-8 shadow-sm">
+          <form onSubmit={handleLogin} noValidate>
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm text-[#9B9B9F] mb-1.5">Email address</label>
+                <Input
+                  type="email" value={email} onChange={(e) => { setEmail(e.target.value); clearErrors(); }}
+                  className={`h-11 text-sm ${errors.email ? "border-[#FF4951]" : ""}`} placeholder="admin@.com"
+                />
+                {errors.email && (
+                  <p className="text-[#FF4951] text-xs mt-1">{errors.email}</p>)}
+              </div>
+
+              <div>
+                <label className="block text-sm text-[#9B9B9F] mb-1.5"> Password</label>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}value={password} onChange={(e) => { setPassword(e.target.value); clearErrors(); }}
+                    placeholder="pass..." className={`h-11 text-sm pr-10 ${errors.password ? "border-[#FF4951]" : ""}`}
+                  />
+                  <span
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-[#9B9B9F] hover:text-[#12033A] dark:hover:text-[#F3F4F6] transition-colors z-10"
+                  >
+                    {showPassword
+                      ? <EyeIcon className="fill-current size-5" />
+                      : <EyeCloseIcon className="fill-current size-5" />
+                    }
+                  </span>
+                </div>
+                {errors.password && ( <p className="text-[#FF4951] text-xs mt-1">{errors.password}</p> )}
+              </div>
+
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <Checkbox
+                    className="text-[#12033A] checked:bg-[#12033A] checked:border-[#12033A]" checked={isChecked} onChange={setIsChecked} id="remember"
+                  />
+                  <span className="text-sm text-[#12033A] dark:text-[#EDEDED]">Remember me</span>
+                </label>
+                <Link
+                  to="/forget" className="text-sm text-[#0047FF] hover:underline underline-offset-2"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              <Button
+                type="submit" disabled={loading || !email || !password || !isValidEmail(email)}
+                className="w-full h-11 text-sm bg-[#12033A] hover:bg-[#1e0a5e] text-white rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed" size="sm"
+              >
+                {loading ? "Login in..." : "Login"}
+              </Button>
+            </div>
+          </form>
+        </div>
+
+        <p className="text-center text-xs text-[#9B9B9F] mt-6">Secure admin access </p>
       </div>
     </div>
   );

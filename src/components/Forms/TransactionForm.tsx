@@ -1,12 +1,9 @@
-import { transaction } from "../../components/Data/dataTransactions";
-
-type StatusType = "Completed" | "Pending" | "Failed";
+import { transaction , StatusType } from "../../interfaces/Transaction";
 
 interface Props {
   newTransaction: transaction;
   setNewTransaction: React.Dispatch<React.SetStateAction<transaction>>;
   editingId: number | null;
-  handleAdd: () => void;
   handleUpdate: () => void;
   onClose?: () => void;
 }
@@ -15,21 +12,21 @@ const STATUS_CONFIG: Record<
   StatusType,
   { label: string; icon: string; activeClass: string }
 > = {
-  Pending: {
+  pending: {
     label: "Pending",
-    icon: "⏳",
+    icon: "",
     activeClass:
       "border-yellow-400 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-600",
   },
-  Completed: {
+  completed: {
     label: "Completed",
-    icon: "✓",
+    icon: "",
     activeClass:
       "border-green-500 bg-green-50 text-green-800 dark:bg-green-900/30 dark:text-green-300 dark:border-green-600",
   },
-  Failed: {
+  failed: {
     label: "Failed",
-    icon: "✕",
+    icon: "",
     activeClass:
       "border-red-400 bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-300 dark:border-red-500",
   },
@@ -113,7 +110,6 @@ export default function TransactionForm({
   newTransaction,
   setNewTransaction,
   editingId,
-  handleAdd,
   handleUpdate,
   onClose,
 }: Props) {
@@ -153,11 +149,11 @@ export default function TransactionForm({
       </div>
 
       <div className="space-y-4">
-        {/* Row 1 — companies */}
+        {/*companies */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Sender company">
             <TextInput
-              placeholder="e.g. Acme Corp"
+              placeholder="Sender C..."
               value={newTransaction.senderCompany}
               onChange={(e) =>
                 setNewTransaction({ ...newTransaction, senderCompany: e.target.value })
@@ -167,7 +163,7 @@ export default function TransactionForm({
           </Field>
           <Field label="Receiver company">
             <TextInput
-              placeholder="e.g. Beta Ltd"
+              placeholder="Receiver C..."
               value={newTransaction.receiverCompany}
               onChange={(e) =>
                 setNewTransaction({ ...newTransaction, receiverCompany: e.target.value })
@@ -177,12 +173,12 @@ export default function TransactionForm({
           </Field>
         </div>
 
-        {/* Row 2 — amount + working hours */}
+        {/*amount - working hours */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Amount sent">
             <TextInput
               type="number"
-              placeholder="0.00"
+              placeholder="Amount..."
               value={newTransaction.amountSend}
               onChange={(e) =>
                 setNewTransaction({ ...newTransaction, amountSend: Number(e.target.value) })
@@ -192,7 +188,7 @@ export default function TransactionForm({
           </Field>
           <Field label="Working hours">
             <TextInput
-              placeholder="e.g. 9am – 5pm"
+              placeholder=" 9am – 5pm"
               value={newTransaction.companyWorkingHours}
               onChange={(e) =>
                 setNewTransaction({ ...newTransaction, companyWorkingHours: e.target.value })
@@ -202,11 +198,11 @@ export default function TransactionForm({
           </Field>
         </div>
 
-        {/* Row 3 — product type + product */}
+        {/*product type - product */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Product type">
             <TextInput
-              placeholder="e.g. Software"
+              placeholder="Product Ty..."
               value={newTransaction.productType}
               onChange={(e) =>
                 setNewTransaction({ ...newTransaction, productType: e.target.value })
@@ -216,7 +212,7 @@ export default function TransactionForm({
           </Field>
           <Field label="Product">
             <TextInput
-              placeholder="e.g. SaaS license"
+              placeholder="Product..."
               value={newTransaction.product}
               onChange={(e) =>
                 setNewTransaction({ ...newTransaction, product: e.target.value })
@@ -258,7 +254,6 @@ export default function TransactionForm({
         </Field>
       </div>
 
-      {/* Actions */}
       <div className="flex gap-2 mt-6">
         {onClose && (
           <button
@@ -271,7 +266,7 @@ export default function TransactionForm({
         )}
         <button
           type="button"
-          onClick={isEditing ? handleUpdate : handleAdd}
+          onClick={handleUpdate}
           disabled={!isFormValid}
           className="flex-[2] py-2.5 px-4 rounded-lg text-sm font-medium text-white bg-[#12033A] hover:bg-[#1e0a5e] transition-colors flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
         >

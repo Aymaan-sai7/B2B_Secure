@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { ThemeToggleButton } from "../common/ThemeToggle";
 import NotificationDropdown from "./NotificationDropdown";
-import UserDropdown from "./UserDropdown";
+import UserDropdown from "./AdminDropdown";
 import { Link } from "react-router";
 import { LanguageToggle } from "../common/LanguageToggle";
 
 interface HeaderProps {
-  onClick?: () => void; 
+  onClick?: () => void;
   onToggle: () => void;
 }
 const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
@@ -55,7 +55,6 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
                 fill="currentColor"
               />
             </svg>
-            {/* Cross Icon */}
           </button>
           <button
             aria-label="Open menu"
@@ -112,27 +111,20 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
               />
             </svg>
           </button>
-
         </div>
         <div
           className={`${isApplicationMenuOpen ? "flex" : "hidden"
             } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
-                        <LanguageToggle />
-            {/* <!-- Language Toggler --> */}
+            <LanguageToggle />
 
-            {/* <!-- Dark Mode Toggler --> */}
             <ThemeToggleButton />
-            {/* <!-- Dark Mode Toggler --> */}
+
             <NotificationDropdown />
-            {/* <!-- Notification Menu Area --> */}
-            
           </div>
-          {/* <!-- User Area --> */}
           <UserDropdown />
         </div>
-        
       </div>
     </header>
   );
