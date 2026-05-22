@@ -3,7 +3,7 @@
 @import "tailwindcss";
 @source "../src/**/*.{ts,tsx}";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *), .dark &);
 
 @theme {
   --font-*: initial;
