@@ -31,7 +31,10 @@ export default function CompanyToolbar({
     <div className="flex flex-wrap items-center gap-2">
       {/* Search */}
       <div className="relative w-full sm:w-48">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9B9B9F]" />
+        <Search
+          size={16}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9B9B9F]"
+        />
         <input
           type="text"
           placeholder="Search by name..."
@@ -53,28 +56,41 @@ export default function CompanyToolbar({
           isOpen={isFilterOpen}
           onClose={closeFilterDropdown}
           className="
-  absolute z-10 mt-2
-  left-1/2 -translate-x-[70%]
-  sm:left-auto sm:right-0 sm:translate-x-0
-  w-[260px] sm:w-44
-  flex flex-col gap-0.5
-  rounded-xl border border-[#E7E6EB]
-  dark:border-[#5C5C5C]
-  bg-[#FFFFFF] dark:bg-[#1E1E1E]
-  p-1.5 shadow-lg
-">
-          {(["all", "state", "Company-name", "date"] as SortType[]).map((sort) => (
-            <DropdownItem
-              key={sort}
-              onClick={() => { onSort(sort); closeFilterDropdown(); }}
-              className={`px-3 py-2 rounded-lg text-sm transition capitalize ${activeSort === sort
-                  ? "bg-[#DBDDFF] text-[#12033A] font-medium"
-                  : "text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5"
+              absolute z-10 mt-2
+            left-1/2 -translate-x-[10%]
+            sm:left-auto sm:right-0 sm:translate-x-0
+            w-[200px] sm:w-44
+            flex flex-col gap-0.5
+            rounded-xl border border-[#E7E6EB]
+            dark:border-[#5C5C5C]
+            bg-[#FFFFFF] dark:bg-[#1E1E1E]
+            p-1.5 shadow-lg
+"
+        >
+          {(["all", "state", "Company-name", "date"] as SortType[]).map(
+            (sort) => (
+              <DropdownItem
+                key={sort}
+                onClick={() => {
+                  onSort(sort);
+                  closeFilterDropdown();
+                }}
+                className={`px-3 py-2 rounded-lg text-sm transition capitalize ${
+                  activeSort === sort
+                    ? "bg-[#DBDDFF] text-[#12033A] font-medium"
+                    : "text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5"
                 }`}
-            >
-              {sort === "all" ? "All" : sort === "state" ? "State" : sort === "Company-name" ? "Name" : "Date"}
-            </DropdownItem>
-          ))}
+              >
+                {sort === "all"
+                  ? "All"
+                  : sort === "state"
+                    ? "State"
+                    : sort === "Company-name"
+                      ? "Name"
+                      : "Date"}
+              </DropdownItem>
+            ),
+          )}
         </Dropdown>
       </div>
       {/* Report */}
