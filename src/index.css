@@ -436,3 +436,12 @@ input[type="time"]::-webkit-inner-spin-button {
 @utility menu-item-icon-inactive {
   @apply text-inactive;
 }
+
+@utility modal-scroll {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

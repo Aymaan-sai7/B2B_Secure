@@ -37,7 +37,7 @@ export default function Modal({ isOpen, children, onClose }: Props) {
         >
           <motion.div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white dark:bg-gray-900 rounded-xl w-[500px] max-h-[90vh] overflow-y-auto p-6 shadow-2xl"
+            className="bg-white dark:bg-gray-900 rounded-xl w-[500px] max-h-[90vh] overflow-y-auto p-6 shadow-2xl scrollbar-hide"
             variants={modal}
           >
             {children}

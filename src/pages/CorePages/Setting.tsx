@@ -1,5 +1,5 @@
 import PageMeta from "../../components/common/PageMeta";
-import { LanguageToggle } from "../../components/common/LanguageToggle";
+// import { LanguageToggle } from "../../components/common/LanguageToggle";
 import { ThemeToggleButton } from "../../components/common/ThemeToggle";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -143,7 +143,8 @@ export default function Settings() {
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Language</p>
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Choose your preferred display language</p>
               </div>
-              <LanguageToggle />
+              {/* <LanguageToggle /> */}
+              **
             </div>
             <div className="flex items-center justify-between py-4">
               <div>
