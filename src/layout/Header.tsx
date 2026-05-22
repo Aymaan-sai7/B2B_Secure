@@ -26,7 +26,7 @@ const Header: React.FC = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 flex w-full bg-[#FFFFFF]/90 backdrop-blur-xl border-b border-[#E7E6EB] dark:bg-[#101010]/90 dark:border-[#5C5C5C] transition-colors duration-300">
+    <header className="sticky top-0 z-50 flex w-full layout-surface border-b transition-colors duration-300">
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
 
         {/* mobile*/}
