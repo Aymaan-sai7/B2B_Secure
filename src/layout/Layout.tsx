@@ -1,5 +1,3 @@
-
-
 import { SidebarProvider, useSidebar } from "../context/SidebarContext";
 import { Outlet } from "react-router";
 import Header from "./Header";
@@ -38,6 +36,3 @@ const Layout: React.FC = () => {
 };
 
 export default Layout;
-
-
-

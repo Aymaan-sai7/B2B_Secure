@@ -12,7 +12,6 @@ import { useAdmin } from "../context/AdminContext";
 import { isSuperAdmin } from "../permissions/permissions";
 import { NavItem } from "../interfaces/Sidebar";
 
-// ── Nav items ──────────────────────────────────────────────────────────────────
 
 const navItems: NavItem[] = [
   { name: "Dashboard",        icon: <LayoutDashboard size={20} />, path: "/" },
@@ -22,7 +21,6 @@ const navItems: NavItem[] = [
   { name: "System Setting",   icon: <Settings       size={20} />, path: "/settings" },
 ];
 
-// ── Component ──────────────────────────────────────────────────────────────────
 
 const Sidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, toggleMobileSidebar } = useSidebar();
@@ -34,12 +32,10 @@ const Sidebar: React.FC = () => {
     [location.pathname]
   );
 
-  // لما يضغط على لينك في الموبايل نقفل السايدبار
   const handleLinkClick = () => {
     if (isMobileOpen) toggleMobileSidebar();
   };
 
-  // فلترة الـ items حسب الـ role
   const filteredNavItems = navItems.filter((item) => {
     if (item.path === "/admins") {
       return admin && isSuperAdmin(admin.roles);
@@ -51,7 +47,6 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      {/* Overlay على الموبايل لما السايدبار مفتوح */}
       {isMobileOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 lg:hidden"
@@ -61,7 +56,7 @@ const Sidebar: React.FC = () => {
 
       <aside
   className={`
-    fixed top-0 start-0 h-screen z-40 flex flex-col
+    fixed top-0 start-0 h-screen z-50 flex flex-col
     layout-surface
     border-r
     transition-all duration-300 ease-in-out
@@ -69,7 +64,6 @@ const Sidebar: React.FC = () => {
     ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
   `}
 >
-        {/* Logo */}
         <div className={`py-4 px-4 flex items-center gap-3 ${!expanded ? "justify-center" : ""}`}>
           <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-[#12033A] shadow-md">
             <span className="text-sm font-bold text-white">B2B</span>
@@ -82,7 +76,6 @@ const Sidebar: React.FC = () => {
           )}
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 overflow-y-auto no-scrollbar px-3 py-4">
           <ul className="flex flex-col gap-1">
             {filteredNavItems.map((nav) => {
@@ -103,12 +96,10 @@ const Sidebar: React.FC = () => {
                       ${!expanded ? "justify-center" : ""}
                     `}
                   >
-                    {/* Icon — نفس لون التكست دايماً */}
                     <span className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
                       {nav.icon}
                     </span>
 
-                    {/* Text — بيظهر بس لما الـ sidebar مفتوح */}
                     {expanded && (
                       <span className="truncate">{nav.name}</span>
                     )}

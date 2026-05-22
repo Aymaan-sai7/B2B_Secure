@@ -29,9 +29,7 @@ const Header: React.FC = () => {
     <header className="sticky top-0 z-40 flex w-full layout-surface border-b transition-colors duration-300">
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
 
-        {/* mobile*/}
         <div className="flex items-center justify-between w-full gap-2 px-3 py-3 border-b border-[#E7E6EB] dark:border-[#5C5C5C] sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
-
           {/* Hamburger */}
           <button
             onClick={handleToggle}
