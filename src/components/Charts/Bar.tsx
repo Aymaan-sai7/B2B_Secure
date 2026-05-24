@@ -1,7 +1,6 @@
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
 
 interface Dataset {
   label: string;
@@ -16,7 +15,6 @@ interface BarChartProps {
   subtitle?: string;
 }
 
-// ── Defaults ───────────────────────────────────────────────────────────────────
 
 const DEFAULT_LABELS   = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
 const DEFAULT_DATASETS: Dataset[] = [
@@ -24,7 +22,6 @@ const DEFAULT_DATASETS: Dataset[] = [
   { label: "Failed/Blocked Transactions", data: [0,0,0,0,0,0], backgroundColor: "#FF4951" },
 ];
 
-// ── Component ──────────────────────────────────────────────────────────────────
 
 export default function BarChart({
   labels   = DEFAULT_LABELS,
@@ -33,22 +30,19 @@ export default function BarChart({
   subtitle = "Completed vs Failed transactions per month",
 }: BarChartProps) {
 
-  // إجمالي كل الداتا
   const total = datasets.flatMap((d) => d.data).reduce((a, b) => a + b, 0);
 
-  // peak month
   const monthlyTotals = labels.map((_, i) => datasets.reduce((sum, d) => sum + (d.data[i] || 0), 0));
   const peakIndex     = monthlyTotals.indexOf(Math.max(...monthlyTotals));
   const peakMonth     = labels[peakIndex] || "-";
   const peakValue     = monthlyTotals[peakIndex] || 0;
 
-  // نسبة النمو بين آخر شهرين
   const lastTwo = monthlyTotals.slice(-2);
   const growth  = lastTwo[0] > 0 ? Number((((lastTwo[1] - lastTwo[0]) / lastTwo[0]) * 100).toFixed(1)) : null;
   const isUp    = (growth ?? 0) >= 0;
 
   const options: ApexOptions = {
-    colors: datasets.map((d) => d.backgroundColor || "#12033A"),
+    colors: datasets.map((d, i) => d.backgroundColor || (["#04BE7B", "#FF4951", "#E2AE21", "#0047FF"][i]) || "#12033A"),
     chart: {
       fontFamily: "Inter, sans-serif",
       type: "bar",
@@ -78,7 +72,6 @@ export default function BarChart({
   return (
     <div className="rounded-2xl border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-white/[0.03] p-5">
 
-      {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
           <h3 className="text-base font-semibold text-[#12033A] dark:text-[#F3F4F6]">{title}</h3>
@@ -93,7 +86,6 @@ export default function BarChart({
         )}
       </div>
 
-      {/* Stats */}
       <div className="flex items-center gap-6 mb-4">
         <div>
           <p className="text-xs text-[#9B9B9F] mb-0.5">Total</p>
@@ -108,14 +100,12 @@ export default function BarChart({
         </div>
       </div>
 
-      {/* Chart */}
       <Chart options={options} series={series} type="bar" height={180} />
 
-      {/* Legend */}
       <div className="flex flex-wrap items-center gap-4 mt-3 pt-3 border-t border-[#E7E6EB] dark:border-[#5C5C5C]">
         {datasets.map((d, i) => (
           <div key={i} className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm" style={{ backgroundColor: d.backgroundColor || "#12033A" }} />
+            <span className="w-3 h-3 rounded-sm" style={{ backgroundColor: d.backgroundColor || (["#04BE7B", "#FF4951", "#E2AE21", "#0047FF"][i]) || "#12033A" }} />
             <span className="text-xs text-[#9B9B9F]">{d.label}</span>
           </div>
         ))}

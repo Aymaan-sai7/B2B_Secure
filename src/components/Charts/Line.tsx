@@ -1,7 +1,6 @@
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
 
 interface Dataset {
   label: string;
@@ -16,7 +15,6 @@ interface LineChartProps {
   subtitle?: string;
 }
 
-// ── Color helper ───────────────────────────────────────────────────────────────
 
 function css(variable: string): string {
   return getComputedStyle(document.documentElement)
@@ -30,11 +28,9 @@ function getChartColors() {
   };
 }
 
-// ── Defaults ───────────────────────────────────────────────────────────────────
 
 const DEFAULT_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
 
-// ── Component ──────────────────────────────────────────────────────────────────
 
 export default function LineChart({
   labels   = DEFAULT_LABELS,
@@ -105,13 +101,11 @@ const prev = d.data[d.data.length - 2]
   return (
     <div className="rounded-2xl border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-white/[0.03] p-5">
 
-      {/* Header */}
       <div className="mb-4">
         <h3 className="text-base font-semibold text-[#12033A] dark:text-[#F3F4F6]">{title}</h3>
         <p className="text-sm text-[#9B9B9F] mt-0.5">{subtitle}</p>
       </div>
 
-      {/* Stats row */}
       <div className="flex flex-wrap items-center gap-6 mb-4">
         {seriesStats.map((s, i) => (
           <div key={i} className="flex items-center gap-3">
@@ -136,10 +130,8 @@ const prev = d.data[d.data.length - 2]
         ))}
       </div>
 
-      {/* Chart */}
       <Chart options={options} series={series} type="area" height={260} />
 
-      {/* Legend */}
       <div className="flex flex-wrap items-center gap-4 mt-3 pt-3 border-t border-[#E7E6EB] dark:border-[#5C5C5C]">
         {resolvedDatasets.map((d, i) => (
           <div key={i} className="flex items-center gap-2">

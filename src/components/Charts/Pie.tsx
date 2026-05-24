@@ -1,7 +1,6 @@
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
 
 interface Dataset {
   data: number[];
@@ -15,7 +14,6 @@ interface PieChartProps {
   subtitle?: string;
 }
 
-// ── Color helper ───────────────────────────────────────────────────────────────
 
 function css(variable: string): string {
   return getComputedStyle(document.documentElement)
@@ -32,11 +30,9 @@ function getChartColors() {
   };
 }
 
-// ── Defaults ───────────────────────────────────────────────────────────────────
 
 const DEFAULT_LABELS = ["Completed", "Pending", "Failed", "Blocked"];
 
-// ── Component ──────────────────────────────────────────────────────────────────
 
 export default function PieChart({
   labels   = DEFAULT_LABELS,
@@ -85,7 +81,6 @@ export default function PieChart({
   return (
     <div className="rounded-2xl border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-white/[0.03] p-5">
 
-      {/* Header */}
       <div className="mb-4">
         <h3 className="text-base font-semibold text-[#12033A] dark:text-[#F3F4F6]">{title}</h3>
         <p className="text-sm text-[#9B9B9F] mt-0.5">{subtitle}</p>
@@ -93,12 +88,10 @@ export default function PieChart({
 
       <div className="flex flex-col sm:flex-row items-center gap-6">
 
-        {/* Chart */}
         <div className="w-full sm:w-1/2 flex items-center justify-center">
           <Chart options={options} series={values} type="pie" height={220} />
         </div>
 
-        {/* Legend + progress bars */}
         <div className="w-full sm:w-1/2 space-y-3">
           {labels.map((label, i) => {
             const value = values[i] ?? 0;
@@ -126,7 +119,6 @@ export default function PieChart({
             );
           })}
 
-          {/* Total */}
           <div className="pt-3 border-t border-[#E7E6EB] dark:border-[#5C5C5C]">
             <div className="flex items-center justify-between">
               <span className="text-xs text-[#9B9B9F]">Total transactions</span>
