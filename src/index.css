@@ -5,6 +5,10 @@
 
 @custom-variant dark (&:is(.dark *), .dark &);
 
+html {
+  scroll-behavior: smooth;
+}
+
 @theme {
   --font-*: initial;
   --font-outfit: Outfit, sans-serif;
@@ -88,7 +92,6 @@
   --z-index-99999: 99999; --z-index-999999: 999999;
 }
 
-/* ── Design System Tokens ────────────────────────────────────────────────────── */
 
 :root {
   --color-primary:            #12033A;
@@ -152,7 +155,6 @@
   --color-onInfoTag:          #4DA3FF;
 }
 
-/* ── Base ────────────────────────────────────────────────────────────────────── */
 
 @layer base {
   *, ::before, ::after { border-color: var(--color-gray-200); }
@@ -160,7 +162,6 @@
   button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 }
 
-/* ── Utilities ───────────────────────────────────────────────────────────────── */
 
 @utility layout-surface {
   background-color: color-mix(in srgb, var(--color-background) 92%, transparent);
@@ -186,14 +187,12 @@
   &::-webkit-scrollbar { display: none; }
 }
 
-/* ── Components ──────────────────────────────────────────────────────────────── */
 
 @layer components {
   .table-text   { @apply text-[#12033A] dark:text-[#EDEDED]; }
   .table-header { @apply text-[#9B9B9F]; }
 }
 
-/* ── ApexCharts overrides ────────────────────────────────────────────────────── */
 
 .apexcharts-text,
 .apexcharts-legend-text {
@@ -211,7 +210,6 @@
   color: var(--color-onBackground) !important;
 }
 
-/* ── Misc ────────────────────────────────────────────────────────────────────── */
 
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator,

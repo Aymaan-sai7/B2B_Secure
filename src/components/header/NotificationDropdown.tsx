@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import api from "../../services/axios";
 
 type Notification = {
-  id: number;
+  id: string;
   title: string;
   time: string;
   isRead: boolean;
+  link: string;
 };
 interface NotificationApiResponse {
   id: string;
@@ -25,6 +26,13 @@ interface NotificationApiResponse {
   };
 }
 
+function getNotificationLink(meta: Record<string, unknown>): string {
+  if (meta?.company_id) return `/company/${meta.company_id}`;
+  if (meta?.transaction_id) return `/transaction/${meta.transaction_id}`;
+  if (meta?.admin_id) return `/admin/${meta.admin_id}`;
+  return "/";
+}
+
 export default function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -33,8 +41,17 @@ export default function NotificationDropdown() {
   const closeDropdown = () => setIsOpen(false);
   const markAllAsRead = () =>
     setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-  const handleDelete = (id: number) =>
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+
+  const handleMarkAsRead = async (id: string) => {
+  try {
+    await api.post(`/admin/notifications/${id}/read`);
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   const handleOpen = () => {
     toggleDropdown();
@@ -51,6 +68,7 @@ export default function NotificationDropdown() {
             title: n.data.title || n.data.message,
             time: new Date(n.data.created_at).toLocaleString(),
             isRead: n.read_at !== null,
+            link: getNotificationLink(n.data.meta as Record<string, unknown>),
           }),
         );
         setNotifications(formatted);
@@ -160,9 +178,14 @@ export default function NotificationDropdown() {
           ) : (
             notifications.map((item) => (
               <li key={item.id}>
-                <DropdownItem>
+                <DropdownItem
+  tag="a"
+  to={item.link}
+  baseClassName="block w-full text-left"
+  onItemClick={closeDropdown}
+>
                   <div
-                    className={`flex items-start justify-between gap-3 px-4 py-3 transition-colors ${!item.isRead ? "bg-blue-50/50 dark:bg-white/[0.03]" : ""}`}
+                    className={`group flex items-start justify-between gap-3 px-4 py-3 transition-colors ${!item.isRead ? "bg-blue-50/50 dark:bg-white/[0.03]" : ""}`}
                   >
                     {/* Dot + text */}
                     <div className="flex items-start gap-2.5 flex-1 min-w-0">
@@ -170,38 +193,28 @@ export default function NotificationDropdown() {
                         className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${!item.isRead ? "bg-[#0047FF]" : "bg-transparent"}`}
                       />
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-[#12033A] dark:text-white leading-snug">
-                          {item.title}
-                        </p>
-                        <span className="text-xs text-[#12033A] dark:text-gray-400 mt-0.5 block">
-                          {item.time}
-                        </span>
+                        <p className="text-sm font-medium text-[#12033A] dark:text-white leading-snug group-hover:text-primary dark:group-hover:text-primary transition-colors">
+        {item.title}
+      </p>
+      <span className="text-xs text-[#12033A] dark:text-gray-400 mt-0.5 block group-hover:text-primary dark:group-hover:text-primary transition-colors">
+        {item.time}
+      </span>
                       </div>
                     </div>
 
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(item.id);
-                      }}
-                      aria-label="Dismiss notification"
-                      className="flex-shrink-0 text-gray-300 hover:text-red-400 dark:text-gray-600 dark:hover:text-red-400 transition-colors mt-0.5"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+<button
+  onClick={(e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    handleMarkAsRead(item.id);
+  }}
+  aria-label="Mark as read"
+  className="flex-shrink-0 text-gray-300 hover:text-green-400 dark:text-gray-600 dark:hover:text-green-400 transition-colors mt-0.5"
+>
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+  </svg>
+</button>                  </div>
                 </DropdownItem>
               </li>
             ))
