@@ -12,25 +12,25 @@ import TransactionTable from "../../components/ui/Tables/TableTransaction";
 import TransactionToolbar from "../../components/ui/TableBar/TransactionToolbar";
 import TransactionReport from "../Report/Report/TransactionReport";
 
-import { transaction, StatusType, UpdateTransactionPayload } from "../../interfaces/Transaction";
+import { transaction, StatusType } from "../../interfaces/Transaction";
 import { getAllTransactions, updateTransaction, deleteTransaction } from "../../services/TransactionService";
 
 
 export default function Transaction() {
   const navigate = useNavigate();
 
-  const [data, setData]                                   = useState<transaction[]>([]);
-  const [loading, setLoading]                             = useState(true);
-  const [searchTerm, setSearchTerm]                       = useState("");
-  const [activeSort, setActiveSort]                       = useState<"all" | "state" | "sender" | "receiver">("all");
-  const [isOpen, setIsOpen]                               = useState(false);
-  const [isFilterDropdownOpen, setIsFilterDropdownOpen]   = useState(false);
-  const [isReportOpen, setIsReportOpen]                   = useState(false);
-  const [editingId, setEditingId]                         = useState<number | null>(null);
-  const [isConfirmOpen, setIsConfirmOpen]                 = useState(false);
-  const [confirmTitle, setConfirmTitle]                   = useState("");
-  const [confirmMessage, setConfirmMessage]               = useState("");
-  const [confirmAction, setConfirmAction]                 = useState<() => void>(() => {});
+  const [data, setData] = useState<transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeSort, setActiveSort] = useState<"all" | "state" | "sender" | "receiver">("all");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmTitle, setConfirmTitle] = useState("");
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [confirmAction, setConfirmAction] = useState<() => void>(() => { });
 
   const emptyTransaction: transaction = {
     id: 0,
@@ -87,14 +87,10 @@ export default function Transaction() {
   const handleUpdate = async () => {
     if (editingId === null) return;
     try {
-      const payload: UpdateTransactionPayload = {
-        sender_company_id: newTransaction.senderCompany,
-        receiver_company_id: newTransaction.receiverCompany,
-        amount: newTransaction.amountSend,
-        status: newTransaction.status,
-      };
-      await updateTransaction(editingId, payload);
-      setData((prev) => prev.map((t) => t.id === editingId ? { ...t, ...newTransaction } : t));
+      await updateTransaction(editingId, { status: newTransaction.status });
+      setData((prev) =>
+        prev.map((t) => t.id === editingId ? { ...t, status: newTransaction.status } : t)
+      );
       enqueueSnackbar("Transaction Updated", { variant: "success" });
       setEditingId(null);
       setIsOpen(false);
@@ -138,13 +134,13 @@ export default function Transaction() {
         const order: StatusType[] = ["completed", "pending", "failed"];
         return order.indexOf(a.status) - order.indexOf(b.status);
       }
-      if (activeSort === "sender")   return a.senderCompany.localeCompare(b.senderCompany);
+      if (activeSort === "sender") return a.senderCompany.localeCompare(b.senderCompany);
       if (activeSort === "receiver") return a.receiverCompany.localeCompare(b.receiverCompany);
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
 
   const toggleFilterDropdown = () => setIsFilterDropdownOpen(!isFilterDropdownOpen);
-  const closeFilterDropdown  = () => setIsFilterDropdownOpen(false);
+  const closeFilterDropdown = () => setIsFilterDropdownOpen(false);
 
   return (
     <>

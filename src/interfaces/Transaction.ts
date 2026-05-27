@@ -1,6 +1,5 @@
 export type StatusType = "completed" | "pending" | "failed";
 
-// api
 export interface TransactionApiResponse {
   id: number;
   sender_name: string;
@@ -25,10 +24,6 @@ export interface transaction {
   status: StatusType;
 }
 
-// update
 export interface UpdateTransactionPayload {
-  sender_company_id: string;
-  receiver_company_id: string;
-  amount: number;
-  status: StatusType;
+  status: string;
 }

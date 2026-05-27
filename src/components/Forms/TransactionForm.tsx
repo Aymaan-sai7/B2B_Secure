@@ -1,4 +1,4 @@
-import { transaction , StatusType } from "../../interfaces/Transaction";
+import { transaction, StatusType } from "../../interfaces/Transaction";
 
 interface Props {
   newTransaction: transaction;
@@ -115,8 +115,9 @@ export default function TransactionForm({
 }: Props) {
   const isEditing = editingId !== null;
 
-  const isFormValid =
-    newTransaction.senderCompany.trim() !== "" &&
+  const isFormValid = isEditing
+    ? true
+    : newTransaction.senderCompany.trim() !== "" &&
     newTransaction.receiverCompany.trim() !== "" &&
     newTransaction.amountSend > 0 &&
     newTransaction.productType.trim() !== "" &&
@@ -149,103 +150,44 @@ export default function TransactionForm({
       </div>
 
       <div className="space-y-4">
-        {/*companies */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Sender company">
-            <TextInput
-              placeholder="Sender C..."
-              value={newTransaction.senderCompany}
-              onChange={(e) =>
-                setNewTransaction({ ...newTransaction, senderCompany: e.target.value })
-              }
-              icon={icons.building}
-            />
-          </Field>
-          <Field label="Receiver company">
-            <TextInput
-              placeholder="Receiver C..."
-              value={newTransaction.receiverCompany}
-              onChange={(e) =>
-                setNewTransaction({ ...newTransaction, receiverCompany: e.target.value })
-              }
-              icon={icons.building}
-            />
-          </Field>
-        </div>
+        {!isEditing && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Field label="Sender company">
+                <TextInput placeholder="Sender C..." value={newTransaction.senderCompany} onChange={(e) => setNewTransaction({ ...newTransaction, senderCompany: e.target.value })} icon={icons.building} />
+              </Field>
+              <Field label="Receiver company">
+                <TextInput placeholder="Receiver C..." value={newTransaction.receiverCompany} onChange={(e) => setNewTransaction({ ...newTransaction, receiverCompany: e.target.value })} icon={icons.building} />
+              </Field>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Field label="Amount sent">
+                <TextInput type="number" placeholder="Amount..." value={newTransaction.amountSend} onChange={(e) => setNewTransaction({ ...newTransaction, amountSend: Number(e.target.value) })} icon={icons.dollar} />
+              </Field>
+              <Field label="Working hours">
+                <TextInput placeholder="9am – 5pm" value={newTransaction.companyWorkingHours} onChange={(e) => setNewTransaction({ ...newTransaction, companyWorkingHours: e.target.value })} icon={icons.clock} />
+              </Field>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Field label="Product type">
+                <TextInput placeholder="Product Ty..." value={newTransaction.productType} onChange={(e) => setNewTransaction({ ...newTransaction, productType: e.target.value })} icon={icons.tag} />
+              </Field>
+              <Field label="Product">
+                <TextInput placeholder="Product..." value={newTransaction.product} onChange={(e) => setNewTransaction({ ...newTransaction, product: e.target.value })} icon={icons.box} />
+              </Field>
+            </div>
+          </>
+        )}
 
-        {/*amount - working hours */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Amount sent">
-            <TextInput
-              type="number"
-              placeholder="Amount..."
-              value={newTransaction.amountSend}
-              onChange={(e) =>
-                setNewTransaction({ ...newTransaction, amountSend: Number(e.target.value) })
-              }
-              icon={icons.dollar}
-            />
-          </Field>
-          <Field label="Working hours">
-            <TextInput
-              placeholder=" 9am – 5pm"
-              value={newTransaction.companyWorkingHours}
-              onChange={(e) =>
-                setNewTransaction({ ...newTransaction, companyWorkingHours: e.target.value })
-              }
-              icon={icons.clock}
-            />
-          </Field>
-        </div>
-
-        {/*product type - product */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Product type">
-            <TextInput
-              placeholder="Product Ty..."
-              value={newTransaction.productType}
-              onChange={(e) =>
-                setNewTransaction({ ...newTransaction, productType: e.target.value })
-              }
-              icon={icons.tag}
-            />
-          </Field>
-          <Field label="Product">
-            <TextInput
-              placeholder="Product..."
-              value={newTransaction.product}
-              onChange={(e) =>
-                setNewTransaction({ ...newTransaction, product: e.target.value })
-              }
-              icon={icons.box}
-            />
-          </Field>
-        </div>
-
-        {/* Status */}
+        {/* Status - بيظهر دايمًا */}
         <Field label="Status">
           <div className="grid grid-cols-3 gap-2">
             {(Object.keys(STATUS_CONFIG) as StatusType[]).map((status) => {
               const config = STATUS_CONFIG[status];
               const isActive = newTransaction.status === status;
               return (
-                <button
-                  key={status}
-                  type="button"
-                  onClick={() =>
-                    setNewTransaction({ ...newTransaction, status })
-                  }
-                  className={`
-                    flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-sm font-medium
-                    border transition-all duration-150
-                    ${
-                      isActive
-                        ? config.activeClass
-                        : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    }
-                  `}
-                >
-                  <span className="text-xs">{config.icon}</span>
+                <button key={status} type="button" onClick={() => setNewTransaction({ ...newTransaction, status })}
+                  className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-sm font-medium border transition-all duration-150 ${isActive ? config.activeClass : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"}`}>
                   {config.label}
                 </button>
               );
