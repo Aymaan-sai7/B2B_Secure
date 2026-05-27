@@ -66,7 +66,7 @@ const Sidebar: React.FC = () => {
       >
         <div className={`py-4 px-4 flex items-center gap-3 ${!expanded ? "justify-center" : ""}`}>
           <div className="flex-shrink-0 w-10 h-10 rounded-xl overflow-hidden">
-            <img src="D:\Downloads\project-grad\project\public\img\icon.PNG" alt="Aegis" className="w-full h-full object-contain" />
+            <img src="/img/icon.PNG" alt="Aegis" className="w-full h-full object-contain" />
           </div>
           {expanded && (
             <div>
