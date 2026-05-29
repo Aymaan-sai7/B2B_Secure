@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "./axios";
 
-// ── Types ──────────────────────────────────────────────────────────────────────
-
 interface ChartDataset {
   label?: string;
   data: number[];
@@ -29,7 +27,6 @@ export interface DashboardSummary {
   integrity:    { latest_logs: unknown[] };
 }
 
-// ── Hook: Summary (Metrics) ────────────────────────────────────────────────────
 
 export function useDashboardSummary() {
   const [data, setData]       = useState<DashboardSummary | null>(null);
@@ -45,7 +42,6 @@ export function useDashboardSummary() {
   return { data, loading };
 }
 
-// ── Hook: Charts ───────────────────────────────────────────────────────────────
 
 export function useDashboardCharts() {
   const [charts, setCharts]   = useState<DashboardChartsData | null>(null);

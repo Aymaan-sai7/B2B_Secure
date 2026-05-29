@@ -12,7 +12,6 @@ interface Props {
   variant?: "full" | "mini";
 }
 
-//   Action dropdown
 function ActionMenu({
   company,onEdit,onDelete,onApprove,
 }: {
@@ -95,7 +94,6 @@ function ActionMenu({
   );
 }
 
-//   Table
 export default function CompanyTable({
   data,
   onEdit,

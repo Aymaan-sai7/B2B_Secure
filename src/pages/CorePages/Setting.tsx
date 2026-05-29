@@ -7,8 +7,6 @@ import { useState, useEffect } from "react";
 import api from "../../services/axios";
 import { FileText } from "lucide-react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 type LogStatus = "Completed" | "Pending" | "Failed";
 
 interface LogApiResponse {
@@ -24,7 +22,6 @@ interface LogEntry extends LogApiResponse {
   status: LogStatus;
 }
 
-// helper
 function inferStatus(action: string): LogStatus {
   const lower = action.toLowerCase();
   if (lower.includes("approved") || lower.includes("created") || lower.includes("success") || lower.includes("login"))
@@ -170,14 +167,12 @@ export default function Settings() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] overflow-hidden"
         >
-          {/* Header */}
           <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h3 className="text-base font-semibold text-gray-800 dark:text-white">Activity Logs</h3>
                 <p className="text-sm text-gray-400 dark:text-gray-500 mt-0.5">System-wide audit trail</p>
               </div>
-              {/* Search */}
               <div className="relative w-full sm:w-64">
                 <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -192,7 +187,6 @@ export default function Settings() {
               </div>
             </div>
 
-            {/* filter button */}
             <div className="flex flex-wrap gap-2 mt-4">
               {filterConfig.map((f) => (
                 <FilterBtn
@@ -267,7 +261,6 @@ export default function Settings() {
             </table>
           </div>
 
-          {/* footer */}
           <div className="px-6 py-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <p className="text-xs text-gray-400 dark:text-gray-500">
               Showing{" "}

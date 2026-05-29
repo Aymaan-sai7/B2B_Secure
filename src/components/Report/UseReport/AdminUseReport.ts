@@ -3,8 +3,6 @@ import Papa from "papaparse";
 import { enqueueSnackbar } from "notistack";
 import api from "../../../services/axios";
 
-// ── Type ───────────────────────────────────────────────────────────────────────
-
 export interface AdminReportRow {
   ID: string;
   Name: string;
@@ -13,14 +11,11 @@ export interface AdminReportRow {
   "Created At": string;
 }
 
-// ── Hook ───────────────────────────────────────────────────────────────────────
-
 export default function useAdminReport(isOpen: boolean) {
   const [rows, setRows]       = useState<AdminReportRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [csvText, setCsvText] = useState("");
 
-  // جيب الداتا لما الـ modal يفتح
   useEffect(() => {
     if (!isOpen) return;
 
@@ -45,14 +40,12 @@ export default function useAdminReport(isOpen: boolean) {
     fetchReport();
   }, [isOpen]);
 
-  // إحصائيات
   const stats = useMemo(() => ({
     total:      rows.length,
     superAdmin: rows.filter((r) => r.Roles?.toLowerCase().includes("super")).length,
     admin:      rows.filter((r) => !r.Roles?.toLowerCase().includes("super")).length,
   }), [rows]);
 
-  // تحميل CSV
   const handleDownloadCSV = () => {
     const blob = new Blob([csvText], { type: "text/csv" });
     const url  = window.URL.createObjectURL(blob);
@@ -66,7 +59,6 @@ export default function useAdminReport(isOpen: boolean) {
     enqueueSnackbar("CSV downloaded", { variant: "success" });
   };
 
-  // تحميل PDF
   const handleDownloadPDF = () => {
     const { total, superAdmin, admin } = stats;
     const printContent = `

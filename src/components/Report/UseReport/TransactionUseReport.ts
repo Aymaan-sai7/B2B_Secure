@@ -3,7 +3,6 @@ import Papa from "papaparse";
 import { enqueueSnackbar } from "notistack";
 import api from "../../../services/axios";
 
-// ── Type ───────────────────────────────────────────────────────────────────────
 
 export interface TransactionReportRow {
   ID: string;
@@ -15,14 +14,12 @@ export interface TransactionReportRow {
   Date: string;
 }
 
-// ── Hook ───────────────────────────────────────────────────────────────────────
 
 export default function useTransactionReport(isOpen: boolean) {
   const [rows, setRows]       = useState<TransactionReportRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [csvText, setCsvText] = useState("");
 
-  // جيب الداتا لما الـ modal يفتح
   useEffect(() => {
     if (!isOpen) return;
 
@@ -47,7 +44,6 @@ export default function useTransactionReport(isOpen: boolean) {
     fetchReport();
   }, [isOpen]);
 
-  // إحصائيات
   const stats = useMemo(() => ({
     total:      rows.length,
     completed:  rows.filter((r) => r.Status === "completed").length,
@@ -58,7 +54,6 @@ export default function useTransactionReport(isOpen: boolean) {
     highRisk:   rows.filter((r) => Number(r["AI Risk Score"]) >= 65).length,
   }), [rows]);
 
-  // تحميل CSV
   const handleDownloadCSV = () => {
     const blob = new Blob([csvText], { type: "text/csv" });
     const url  = window.URL.createObjectURL(blob);
@@ -72,7 +67,6 @@ export default function useTransactionReport(isOpen: boolean) {
     enqueueSnackbar("CSV downloaded", { variant: "success" });
   };
 
-  // تحميل PDF
   const handleDownloadPDF = () => {
     const { total, completed, pending, failed, highRisk } = stats;
     const printContent = `

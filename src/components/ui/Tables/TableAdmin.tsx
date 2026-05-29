@@ -10,7 +10,6 @@ interface Props {
   onRowClick?: (id: number) => void;
 }
 
-// Role badge
 function RoleBadge({ role }: { role: string }) {
   return (
     <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#DBDDFF] text-[#12033A] dark:bg-[#0F1C2E] dark:text-[#4DA3FF]">
@@ -19,7 +18,6 @@ function RoleBadge({ role }: { role: string }) {
   );
 }
 
-// Action dropdown
 function ActionMenu({
   admin, onEdit, onDelete,
 }: {
@@ -80,7 +78,6 @@ function ActionMenu({
   );
 }
 
-//   Table
 export default function AdminTable({ data, onEdit, onDelete, onRowClick, }: Props) {
   const { t } = useTranslation();
 

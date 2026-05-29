@@ -1,7 +1,6 @@
 import api from "./axios";
 import { transaction, TransactionApiResponse, UpdateTransactionPayload } from "../interfaces/Transaction";
 
-// helper
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleString("en-GB", {
     day: "2-digit",

@@ -1,6 +1,5 @@
 import { CompanyReportRow } from "../UseReport/CompanyUseReport";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function DonutChart({ approved, pending, total }: { approved: number; pending: number; total: number }) {
   if (total === 0) return null;
 
@@ -13,9 +12,7 @@ function DonutChart({ approved, pending, total }: { approved: number; pending: n
 
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      {/* background circle */}
       <circle cx={50} cy={50} r={radius} fill="none" stroke="#F1F3FA" strokeWidth={14} />
-      {/* approved arc */}
       <circle
         cx={50} cy={50} r={radius} fill="none"
         stroke="#04BE7B" strokeWidth={14}
@@ -23,7 +20,6 @@ function DonutChart({ approved, pending, total }: { approved: number; pending: n
         strokeLinecap="round"
         transform="rotate(-90 50 50)"
       />
-      {/* pending arc */}
       <circle
         cx={50} cy={50} r={radius} fill="none"
         stroke="#E2AE21" strokeWidth={14}
@@ -32,7 +28,6 @@ function DonutChart({ approved, pending, total }: { approved: number; pending: n
         strokeLinecap="round"
         transform="rotate(-90 50 50)"
       />
-      {/* center text */}
       <text x={50} y={46} textAnchor="middle" className="fill-[#12033A] dark:fill-[#EDEDED]" fontSize={14} fontWeight="bold">{total}</text>
       <text x={50} y={60} textAnchor="middle" fill="#9B9B9F" fontSize={8}>total</text>
     </svg>
@@ -47,15 +42,12 @@ export default function ReportSections({
 }: any) {
   return (
     <>
-                {/* Stats + Chart */}
                 <div className="flex flex-col sm:flex-row gap-4 mb-6">
 
-                  {/* Donut chart */}
                   <div className="flex items-center justify-center sm:w-32">
                     <DonutChart approved={stats.approved} pending={stats.pending} total={stats.total} />
                   </div>
 
-                  {/* Stats grid */}
                   <div className="flex-1 grid grid-cols-2 gap-3">
                     <div className="bg-[#F1F3FA] dark:bg-white/5 rounded-xl p-3">
                       <p className="text-2xl font-bold text-[#12033A] dark:text-[#F3F4F6]">{stats.total}</p>
@@ -76,7 +68,6 @@ export default function ReportSections({
                   </div>
                 </div>
 
-                {/* Legend */}
                 <div className="flex gap-4 mb-4">
                   <div className="flex items-center gap-1.5">
                     <span className="w-3 h-3 rounded-full bg-[#04BE7B]" />
@@ -88,7 +79,6 @@ export default function ReportSections({
                   </div>
                 </div>
 
-                {/* Preview Table */}
                 <div className="rounded-xl border border-[#E7E6EB] dark:border-[#5C5C5C] overflow-hidden mb-5">
                   <div className="px-4 py-2.5 border-b border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#F1F3FA] dark:bg-white/5">
                     <p className="text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">
@@ -142,7 +132,6 @@ export default function ReportSections({
                   )}
                 </div>
 
-                {/* Download buttons */}
                 <div className="flex gap-2">
                   <button
                     onClick={handleDownloadCSV}

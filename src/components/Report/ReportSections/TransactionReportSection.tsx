@@ -1,6 +1,5 @@
 import { TransactionReportRow } from "../UseReport/TransactionUseReport";
 
-// ── Status Badge ───────────────────────────────────────────────────────────────
 
 function StatusBadge({ status }: { status: string }) {
   const s = status.toLowerCase();
@@ -19,8 +18,6 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-// ── AI Badge ───────────────────────────────────────────────────────────────────
-
 function AIBadge({ aiStatus }: { aiStatus: string }) {
   const clean = aiStatus.replace(/[✅❌]/g, "").trim().toLowerCase();
   const style =
@@ -38,7 +35,6 @@ function AIBadge({ aiStatus }: { aiStatus: string }) {
   );
 }
 
-// ── Props ──────────────────────────────────────────────────────────────────────
 
 interface Props {
   rows: TransactionReportRow[];
@@ -55,12 +51,10 @@ interface Props {
   handleDownloadPDF: () => void;
 }
 
-// ── Main ───────────────────────────────────────────────────────────────────────
 
 export default function TransactionReportSection({ rows, stats, handleDownloadCSV, handleDownloadPDF }: Props) {
   return (
     <>
-      {/* Transaction Stats */}
       <p className="text-xs font-medium text-[#9B9B9F] uppercase tracking-wider mb-2">Transaction Status</p>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
         <div className="bg-[#F1F3FA] dark:bg-white/5 rounded-xl p-3">
@@ -98,7 +92,6 @@ export default function TransactionReportSection({ rows, stats, handleDownloadCS
         </div>
       </div>
 
-      {/* Preview Table */}
       <div className="rounded-xl border border-[#E7E6EB] dark:border-[#5C5C5C] overflow-hidden mb-5">
         <div className="px-4 py-2.5 border-b border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#F1F3FA] dark:bg-white/5">
           <p className="text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">
@@ -141,7 +134,6 @@ export default function TransactionReportSection({ rows, stats, handleDownloadCS
         )}
       </div>
 
-      {/* Download buttons */}
       <div className="flex gap-2">
         <button onClick={handleDownloadCSV}
           className="flex-1 h-11 text-sm rounded-xl border border-[#E7E6EB] dark:border-[#5C5C5C] text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-2">

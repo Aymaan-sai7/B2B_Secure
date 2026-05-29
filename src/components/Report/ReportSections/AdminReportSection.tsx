@@ -1,7 +1,5 @@
 import { AdminReportRow } from "../UseReport/AdminUseReport";
 
-// ── Props ──────────────────────────────────────────────────────────────────────
-
 interface Props {
   rows: AdminReportRow[];
   stats: {
@@ -13,7 +11,6 @@ interface Props {
   handleDownloadPDF: () => void;
 }
 
-// ── Main ───────────────────────────────────────────────────────────────────────
 
 export default function AdminReportSection({ rows, stats, handleDownloadCSV, handleDownloadPDF }: Props) {
   return (

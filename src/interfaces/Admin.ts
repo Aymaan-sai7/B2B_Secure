@@ -1,6 +1,5 @@
 export type AdminRole = "Admin" | "superAdmin";
 
-// API
 export interface AdminApiResponse {
   id: number;
   name: string;
@@ -19,7 +18,6 @@ export interface AdminType {
   action: string;
 }
 
-// add
 export interface AddAdminPayload {
   name: string;
   email: string;
@@ -28,7 +26,6 @@ export interface AddAdminPayload {
 }
 
 
-// update
 export interface UpdateAdminPayload {
   name: string;
   email: string;

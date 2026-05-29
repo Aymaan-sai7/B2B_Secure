@@ -1,6 +1,5 @@
 export type StatusType = "Completed" | "Pending" | "Failed";
 
-// api
 export interface CompanyApiResponse {
   id: number;
   name: string;
@@ -26,7 +25,6 @@ export interface CompanyType {
   address: string;
 }
 
-// add - update
 export interface CompanyPayload {
   name: string;
   email: string;

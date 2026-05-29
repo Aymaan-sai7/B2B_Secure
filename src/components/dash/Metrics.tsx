@@ -6,8 +6,6 @@ interface Props {
   loading: boolean;
 }
 
-// ── Metric Card ────────────────────────────────────────────────────────────────
-
 function MetricCard({
   icon,
   label,
@@ -37,11 +35,8 @@ function MetricCard({
   );
 }
 
-// ── Main ───────────────────────────────────────────────────────────────────────
-
 export default function Metrics({ data, loading }: Props) {
 
-  // Skeleton
   if (loading || !data) {
     return (
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -55,7 +50,7 @@ export default function Metrics({ data, loading }: Props) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
 
-      {/* Total Companies */}
+      {/* Companies */}
       <MetricCard
         icon={<Building2 size={22} />}
         label="Companies"
@@ -82,7 +77,7 @@ export default function Metrics({ data, loading }: Props) {
         iconColor="#E2AE21"
       />
 
-      {/* Fraud Rate */}
+      {/* fraud */}
       <MetricCard
         icon={<ShieldAlert size={22} />}
         label="Fraud Rate"

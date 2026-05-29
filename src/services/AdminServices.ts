@@ -1,7 +1,6 @@
 import api from "./axios";
 import { AdminType, AdminApiResponse, AddAdminPayload, UpdateAdminPayload } from "../interfaces/Admin";
 
-// helper
 function mapAdmin(a: AdminApiResponse): AdminType {
   return {
     id: a.id,

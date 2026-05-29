@@ -2,24 +2,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { overlay, modal } from "../../../components/animations/animation";
 import useCompanyReport from "../UseReport/CompanyUseReport";
 import ReportSections from "../ReportSections/CompanyReportSection";
-// ── Types ──────────────────────────────────────────────────────────────────────
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// ── Mini Donut Chart بـ SVG بسيط ──────────────────────────────────────────────
 
-
-
-// ── Main Component ─────────────────────────────────────────────────────────────
 
 export default function CompanyReportModal({ isOpen, onClose }: Props) {
   const {rows,loading,stats,handleDownloadCSV,handleDownloadPDF,
   } = useCompanyReport(isOpen);
 
-  // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <AnimatePresence>
       {isOpen && (
@@ -54,7 +48,6 @@ export default function CompanyReportModal({ isOpen, onClose }: Props) {
             </div>
 
             {loading ? (
-              // Skeleton
               <div className="space-y-3">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="h-12 bg-[#F1F3FA] dark:bg-white/5 rounded-xl animate-pulse" />

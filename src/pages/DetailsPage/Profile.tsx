@@ -35,7 +35,7 @@ export default function Profile() {
     try {
       setSaving(true);
       await api.put("/admin/profile", formData);
-      await refreshAdmin(); // جيب البيانات الجديدة من الـ API
+      await refreshAdmin(); 
       closeEdit();
     } catch (err) {
       console.log(err);

@@ -10,7 +10,6 @@ interface Props {
   onRowClick: (id: number) => void;
 }
 
-//   Action dropdown
 function ActionMenu({
   transaction,
   onEdit,
@@ -78,13 +77,11 @@ function ActionMenu({
   );
 }
 
-//   Main Table
 export default function TransactionTable({ data, onEdit, onDelete, onRowClick }: Props) {
   return (
     <div className="max-w-full overflow-x-auto">
       <table className="w-full">
 
-        {/* Header */}
         <thead className="border-y border-[#E7E6EB] dark:border-[#5C5C5C]">
           <tr className="text-left">
             <th className="w-[60px] px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">ID</th>
@@ -97,7 +94,6 @@ export default function TransactionTable({ data, onEdit, onDelete, onRowClick }:
           </tr>
         </thead>
 
-        {/* Body */}
         <tbody className="divide-y divide-[#E7E6EB] dark:divide-[#5C5C5C]">
           {data.length === 0 ? (
             <tr>
