@@ -23,10 +23,12 @@ export default function OtpForm() {
   }, [navigate]);
 
   useEffect(() => {
-    const code = otp.join("");
+  const code = otp.join("");
+  if (code.length === 4 && !loading) {
     inputsRef.current[3]?.blur();
-    if (code.length === 4 && !loading) handleVerifyOtp();
-  }, [otp, loading]);
+    handleVerifyOtp();
+  }
+}, [otp, loading]);
 
   useEffect(() => {
     if (timer <= 0) {
@@ -44,7 +46,7 @@ export default function OtpForm() {
     setOtp(newOtp);
     if (errors.otp) setErrors((p) => ({ ...p, otp: "" }));
     if (errors.api) setErrors((p) => ({ ...p, api: "" }));
-    if (value && index < 5) inputsRef.current[index + 1]?.focus();
+    if (value && index < 3) inputsRef.current[index + 1]?.focus();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
