@@ -1,9 +1,11 @@
 import PageMeta from "../../components/common/PageMeta";
 // import { LanguageToggle } from "../../components/common/LanguageToggle";
 import { ThemeToggleButton } from "../../components/common/ThemeToggle";
+import SummaryReport from "../../components/Report/Report/SummaryReport";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import api from "../../services/axios";
+import { FileText } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -80,6 +82,7 @@ export default function Settings() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState("");
   const [filter, setFilter]   = useState<"All" | LogStatus>("All");
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   useEffect(() => {
     const fetchLogs = async () => {
@@ -139,13 +142,18 @@ export default function Settings() {
           </div>
           <div className="px-6 py-2 divide-y divide-gray-100 dark:divide-gray-800">
             <div className="flex items-center justify-between py-4">
-              <div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Language</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Choose your preferred display language</p>
-              </div>
-              {/* <LanguageToggle /> */}
-              **
-            </div>
+  <div>
+    <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Summary Report</p>
+    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Full system overview and statistics</p>
+  </div>
+  <button
+  onClick={() => setIsReportOpen(true)}
+  className="inline-flex items-center gap-1.5 rounded-lg border border-[#E7E6EB] dark:border-[#5C5C5C] bg-[#FFFFFF] dark:bg-white/[0.03] px-3 py-2 text-sm text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors"
+>
+  <FileText size={15} />
+  Report
+</button>
+</div>
             <div className="flex items-center justify-between py-4">
               <div>
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-200">Theme</p>
@@ -273,6 +281,7 @@ export default function Settings() {
         </motion.div>
 
       </div>
+      <SummaryReport isOpen={isReportOpen} onClose={() => setIsReportOpen(false)} />
     </>
   );
 }

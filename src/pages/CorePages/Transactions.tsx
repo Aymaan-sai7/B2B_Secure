@@ -10,7 +10,7 @@ import Confirm from "../../components/ui/Confirm";
 import TransactionForm from "../../components/Forms/TransactionForm";
 import TransactionTable from "../../components/ui/Tables/TableTransaction";
 import TransactionToolbar from "../../components/ui/TableBar/TransactionToolbar";
-import TransactionReport from "../Report/Report/TransactionReport";
+import TransactionReport from "../../components/Report/Report/TransactionReport";
 
 import { transaction, StatusType } from "../../interfaces/Transaction";
 import { getAllTransactions, updateTransaction, deleteTransaction } from "../../services/TransactionService";

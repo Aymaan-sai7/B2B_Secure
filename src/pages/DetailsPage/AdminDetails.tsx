@@ -241,7 +241,7 @@ export default function AdminDetails() {
             <label className="block text-sm text-[#9B9B9F] mb-1.5">Select role</label>
 
             <div className="grid grid-cols-3 gap-2 mb-5">
-              {["Admin", "Moderator", "User"].map((role) => (
+              {["Admin",].map((role) => (
                 <button
                   key={role}
                   onClick={() => setNewRole(role)}

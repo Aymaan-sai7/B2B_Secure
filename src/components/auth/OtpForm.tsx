@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function OtpForm() {
-  const [otp, setOtp]       = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp]       = useState(["", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors]   = useState({ otp: "", api: "" });
   const [timer, setTimer]     = useState(60);
@@ -22,8 +22,8 @@ export default function OtpForm() {
 
   useEffect(() => {
     const code = otp.join("");
-    inputsRef.current[5]?.blur();
-    if (code.length === 6 && !loading) handleVerifyOtp();
+    inputsRef.current[3]?.blur();
+    if (code.length === 4 && !loading) handleVerifyOtp();
   }, [otp, loading]);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function OtpForm() {
     const email = localStorage.getItem("resetEmail");
     if (!email) { setErrors((p) => ({ ...p, api: "Session expired, please try again" })); return; }
     const code = otp.join("");
-    if (code.length !== 6) { setErrors((p) => ({ ...p, otp: "Please enter the full 6-digit code" })); return; }
+    if (code.length !== 4) { setErrors((p) => ({ ...p, otp: "Please enter the full 6-digit code" })); return; }
     try {
       setLoading(true);
       const res = await api.post("/mfa/send-otp", { resetCode: code, email });
@@ -163,7 +163,7 @@ export default function OtpForm() {
               </div>
 
               <Button
-                type="button" onClick={handleVerifyOtp} disabled={loading || otp.join("").length !== 6}
+                type="button" onClick={handleVerifyOtp} disabled={loading || otp.join("").length !== 4}
                 className="w-full h-11 text-sm bg-[#12033A] hover:bg-[#1e0a5e] text-white rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed" size="sm"
               >
                 {loading ? "Verifying..." : "Verify code"}

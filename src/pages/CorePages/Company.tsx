@@ -10,7 +10,7 @@ import Confirm from "../../components/ui/Confirm";
 import CompanyForm from "../../components/Forms/CompanyForm";
 import CompanyTable from "../../components/ui/Tables/TableCompany";
 import CompanyToolbar from "../../components/ui/TableBar/CompanyToolbar";
-import CompanyReport from "../Report/Report/CompanyReport";
+import CompanyReport from "../../components/Report/Report/CompanyReport";
 
 import { CompanyType, CompanyApiResponse } from "../../interfaces/Company";
 import {

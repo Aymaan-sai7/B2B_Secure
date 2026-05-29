@@ -11,7 +11,7 @@ import Confirm from "../../components/ui/Confirm";
 import AdminForm from "../../components/Forms/AdminForm";
 import AdminTable from "../../components/ui/Tables/TableAdmin";
 import AdminToolbar from "../../components/ui/TableBar/AdminToolbar";
-import AdminReport from "../Report/Report/AdminReport";
+import AdminReport from "../../components/Report/Report/AdminReport";
 
 import { AdminType, AddAdminPayload } from "../../interfaces/Admin";
 import { getAllAdmins, addAdmin, updateAdmin, deleteAdmin } from "../../services/AdminServices";
