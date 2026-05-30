@@ -3,7 +3,7 @@ import { transaction, StatusType } from "../../interfaces/Transaction";
 interface Props {
   newTransaction: transaction;
   setNewTransaction: React.Dispatch<React.SetStateAction<transaction>>;
-  editingId: number | null;
+  editingId: string | null;
   handleUpdate: () => void;
   onClose?: () => void;
 }

@@ -1,7 +1,7 @@
 export type StatusType = "completed" | "pending" | "failed";
 
 export interface TransactionApiResponse {
-  id: number;
+  id: string;
   sender_name: string;
   receiver_name: string;
   amount: string;
@@ -10,7 +10,7 @@ export interface TransactionApiResponse {
 }
 
 export interface transaction {
-  id: number;
+  id: string;
   date: string;
   senderCompany: string;
   receiverCompany: string;

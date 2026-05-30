@@ -42,7 +42,7 @@ function SectionLabel({ label }: { label: string }) {
 export default function TransactionDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const transactionId = Number(id);
+  const transactionId = id as string;
   const [transaction, setTransaction] = useState<transaction | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -127,7 +127,7 @@ export default function TransactionDetails() {
 
         <SectionLabel label="Transfer" />
         <div className="px-6 pb-2">
-          <Row label="Transaction ID" value={`#${transaction.id}`} />
+          <Row label="Transaction ID" value={`${transaction.id}`} />
           <Row label="Date" value={transaction.date} />
           <Row label="Status" value={<StatusBadge status={transaction.status} />} />
         </div>

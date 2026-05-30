@@ -34,7 +34,7 @@ export async function getAllTransactions(): Promise<transaction[]> {
   return res.data.data.map((t: TransactionApiResponse) => mapTransaction(t));
 }
 
-export async function getTransactionById(id: number): Promise<transaction> {
+export async function getTransactionById(id: string): Promise<transaction> {
   const res = await api.get(`/admin/transactions/${id}`);
   const t = res.data.data;
   return {
@@ -53,10 +53,10 @@ export async function getTransactionById(id: number): Promise<transaction> {
   };
 }
 
-export async function updateTransaction(id: number, payload: UpdateTransactionPayload): Promise<void> {
+export async function updateTransaction(id: string, payload: UpdateTransactionPayload): Promise<void> {
   await api.put(`/admin/transactions/${id}`, payload);
 }
 
-export async function deleteTransaction(id: number): Promise<void> {
+export async function deleteTransaction(id: string): Promise<void> {
   await api.delete(`/admin/transactions/${id}`);
 }

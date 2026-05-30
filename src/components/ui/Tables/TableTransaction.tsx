@@ -6,8 +6,8 @@ import { transaction } from "../../../interfaces/Transaction";
 interface Props {
   data: transaction[];
   onEdit: (t: transaction) => void;
-  onDelete: (id: number) => void;
-  onRowClick: (id: number) => void;
+  onDelete: (id: string) => void;
+  onRowClick: (id: string) => void;
 }
 
 function ActionMenu({
@@ -17,7 +17,7 @@ function ActionMenu({
 }: {
   transaction: transaction;
   onEdit: (t: transaction) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);

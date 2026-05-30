@@ -26,14 +26,14 @@ export default function Transaction() {
   const [isOpen, setIsOpen] = useState(false);
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [confirmTitle, setConfirmTitle] = useState("");
   const [confirmMessage, setConfirmMessage] = useState("");
   const [confirmAction, setConfirmAction] = useState<() => void>(() => { });
 
   const emptyTransaction: transaction = {
-    id: 0,
+    id: "",
     date: new Date().toLocaleDateString(),
     senderCompany: "",
     receiverCompany: "",
@@ -110,7 +110,7 @@ export default function Transaction() {
     });
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
       setData((prev) => prev.filter((t) => t.id !== id));
       await deleteTransaction(id);
