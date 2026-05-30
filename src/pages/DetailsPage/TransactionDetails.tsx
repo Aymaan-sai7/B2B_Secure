@@ -69,7 +69,7 @@ export default function TransactionDetails() {
   if (!transaction) {
     return (
       <div className="min-h-[400px] flex flex-col items-center justify-center gap-3">
-        <span className="text-4xl">💳</span>
+        <span className="text-4xl"></span>
         <p className="text-gray-500 dark:text-gray-400 text-sm">Transaction not found</p>
         <button
           onClick={() => navigate(-1)}
