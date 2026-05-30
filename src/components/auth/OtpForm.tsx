@@ -28,7 +28,7 @@ export default function OtpForm() {
     inputsRef.current[3]?.blur();
     handleVerifyOtp();
   }
-}, [otp, loading]);
+}, [otp]);
 
   useEffect(() => {
     if (timer <= 0) {
@@ -78,7 +78,6 @@ export default function OtpForm() {
       setLoading(true);
       const res = await api.post("/mfa/send-otp", { resetCode: code, email });
       console.log(res.data);
-      inputsRef.current[5]?.blur();
       navigate("/reset");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -90,7 +89,7 @@ export default function OtpForm() {
       } else {
         setErrors((p) => ({ ...p, api: "Something went wrong" }));
       }
-      setOtp(["", "", "", "", "", ""]);
+      setOtp(["", "", "", ""]);
       inputsRef.current[0]?.focus();
     } finally {
       setLoading(false);
