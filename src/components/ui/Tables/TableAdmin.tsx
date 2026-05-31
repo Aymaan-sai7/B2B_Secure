@@ -18,24 +18,29 @@ function RoleBadge({ role }: { role: string }) {
   );
 }
 
-function ActionMenu({
-  admin, onEdit, onDelete,
-}: {
+function ActionMenu({ admin, onEdit, onDelete }: {
   admin: AdminType;
   onEdit: (a: AdminType) => void;
   onDelete: (id: number) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [position, setPosition] = useState({ top: 0, right: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
-  const [dropdownPosition, setDropdownPosition] = useState<"top" | "bottom">("top");
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-  e.stopPropagation();
-  const rect = e.currentTarget.getBoundingClientRect();
-  const spaceBelow = window.innerHeight - rect.bottom;
-  setDropdownPosition(spaceBelow < 200 ? "bottom" : "top");
-  setIsOpen((prev) => !prev);
-};
+    e.stopPropagation();
+    if (!isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      setPosition({
+        top: spaceBelow < 120 ? rect.top - 80 : rect.bottom + 4,
+        right: window.innerWidth - rect.right,
+      });
+    }
+    setIsOpen((prev) => !prev);
+  };
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -45,9 +50,11 @@ function ActionMenu({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
   return (
     <div className="relative" ref={menuRef}>
       <button
+        ref={buttonRef}
         onClick={handleToggle}
         className="p-1.5 rounded-lg text-[#9B9B9F] hover:text-[#12033A] hover:bg-[#F1F3FA] dark:hover:bg-white/5 dark:hover:text-[#F3F4F6] transition-colors"
         title="Actions"
@@ -56,7 +63,10 @@ function ActionMenu({
       </button>
 
       {isOpen && (
-        <div className={`absolute right-0 z-20 w-36 bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#E7E6EB] dark:border-[#5C5C5C] rounded-xl shadow-lg overflow-hidden ${dropdownPosition === "top" ? "top-9" : "bottom-9"}`}>
+        <div
+          style={{ top: position.top, right: position.right }}
+          className="fixed z-[9999] w-36 bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#E7E6EB] dark:border-[#5C5C5C] rounded-xl shadow-lg overflow-hidden"
+        >
           <button
             onClick={(e) => { e.stopPropagation(); onEdit(admin); setIsOpen(false); }}
             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[#12033A] dark:text-[#EDEDED] hover:bg-[#E1E3FF] dark:hover:bg-[#0F1C2E] hover:text-[#0047FF] dark:hover:text-[#4DA3FF] transition-colors"
@@ -82,7 +92,7 @@ export default function AdminTable({ data, onEdit, onDelete, onRowClick, }: Prop
   const { t } = useTranslation();
 
   return (
-    <div className="max-w-full overflow-x-auto">
+    <div className="max-w-full overflow-x-auto overflow-y-visible">
       <table className="w-full">
 
         {/* Header */}
