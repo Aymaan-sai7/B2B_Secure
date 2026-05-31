@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import axios from "axios";
-import { ApiError } from "../../interfaces/apiError";
 import { enqueueSnackbar } from "notistack";
 import { useAdmin } from "../../context/AdminContext";
 
@@ -50,24 +49,25 @@ export default function LoginForm() {
     if (hasError) return;
 
     try {
-      setLoading(true);
-      const res = await loginAPI({ email, password });
-      localStorage.setItem("token", res.access_token);
-      enqueueSnackbar("Login successful", { variant: "success" });
-      await refreshAdmin();
-      navigate("/");
-    } catch (error) {
-      let message = "Invalid email or password";
-      if (axios.isAxiosError<ApiError>(error)) {
-        message = error.response?.data?.message || message;
-      }
-      setErrors({ email: "", password: message });
-    } finally {
-      setLoading(false);
-    }
+  setLoading(true);
+  const res = await loginAPI({ email, password });
+  localStorage.setItem("token", res.access_token);
+  enqueueSnackbar("Login successful", { variant: "success" });
+  await refreshAdmin();
+  navigate("/");
+  setLoading(false);
+} catch (error) {
+  setLoading(false);
+  let message = "Invalid email or password";
+  if (axios.isAxiosError(error)) {
+    message = error.response?.data?.message || message;
+  }
+  setErrors({ email: "", password: message });
+}
   };
 
-  const clearErrors = () => setErrors({ email: "", password: "" });
+  const clearEmailError  = () => setErrors((p) => ({ ...p, email: "" }));
+const clearPasswordError = () => setErrors((p) => ({ ...p, password: "" }));
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FFFFFF] dark:bg-[#101010] px-4">
@@ -91,7 +91,7 @@ export default function LoginForm() {
               <div>
                 <label className="block text-sm text-[#9B9B9F] mb-1.5">Email address</label>
                 <Input
-                  type="email" value={email} onChange={(e) => { setEmail(e.target.value); clearErrors(); }}
+                  type="email" value={email} onChange={(e) => { setEmail(e.target.value); clearEmailError(); }}
                   className={`h-11 text-sm ${errors.email ? "border-[#FF4951]" : ""}`} placeholder="admin@.com"
                 />
                 {errors.email && (
@@ -102,7 +102,7 @@ export default function LoginForm() {
                 <label className="block text-sm text-[#9B9B9F] mb-1.5"> Password</label>
                 <div className="relative">
                   <Input
-                    type={showPassword ? "text" : "password"}value={password} onChange={(e) => { setPassword(e.target.value); clearErrors(); }}
+                    type={showPassword ? "text" : "password"}value={password} onChange={(e) => { setPassword(e.target.value); clearPasswordError(); }}
                     placeholder="pass..." className={`h-11 text-sm pr-10 ${errors.password ? "border-[#FF4951]" : ""}`}
                   />
                   <span

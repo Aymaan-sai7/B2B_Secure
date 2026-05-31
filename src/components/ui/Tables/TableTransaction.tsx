@@ -59,7 +59,7 @@ function ActionMenu({
             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[#12033A] dark:text-[#EDEDED] hover:bg-[#E1E3FF] dark:hover:bg-[#0F1C2E] hover:text-[#0047FF] dark:hover:text-[#4DA3FF] transition-colors"
           >
             <Edit2 size={14} />
-            Edit
+            Change Status
           </button>
 
           <div className="h-px bg-[#E7E6EB] dark:bg-[#5C5C5C]" />

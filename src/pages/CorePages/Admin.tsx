@@ -15,6 +15,7 @@ import AdminReport from "../../components/Report/Report/AdminReport";
 
 import { AdminType, AddAdminPayload } from "../../interfaces/Admin";
 import { getAllAdmins, addAdmin, updateAdmin, deleteAdmin } from "../../services/AdminServices";
+import { ApiError } from "../../interfaces/apiError";
 
 
 export default function Admin() {
@@ -84,52 +85,64 @@ const resetForm = () => setNewAdmin({ name: "", email: "", password: "", role: "
   setIsOpen(true);
 };
 
-  const handleAdd = async () => {
-    if (!newAdmin.name.trim() || !newAdmin.email.trim()) {
-      enqueueSnackbar("Please fill all fields", { variant: "warning" });
-      return;
+const handleAdd = async () => {
+  if (!newAdmin.name.trim() || !newAdmin.email.trim() || !newAdmin.password.trim()) {
+    enqueueSnackbar("Please fill all fields", { variant: "warning" });
+    return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(newAdmin.email)) {
+    enqueueSnackbar("Invalid email format", { variant: "warning" });
+    return;
+  }
+  try {
+    setSubmitting(true);
+    await addAdmin({ name: newAdmin.name, email: newAdmin.email, password: newAdmin.password, role: "Admin" });
+    enqueueSnackbar("Admin Added", { variant: "success" });
+    fetchAdmins();
+    closeModal();
+  } catch (err) {
+    const error = err as ApiError;
+    const errors = error.response?.data?.errors;
+    if (errors) {
+      Object.values(errors).flat().forEach((msg: string) => {
+        enqueueSnackbar(msg, { variant: "error" });
+      });
+    } else {
+      enqueueSnackbar(error.response?.data?.message || "Failed to add admin", { variant: "error" });
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(newAdmin.email)) {
-      enqueueSnackbar("Invalid email format", { variant: "warning" });
-      return;
-    }
-    try {
-      setSubmitting(true);
-      await addAdmin({ name: newAdmin.name, email: newAdmin.email, password: newAdmin.password, role: "Admin" });
-      enqueueSnackbar("Admin Added", { variant: "success" });
-      fetchAdmins();
-      closeModal();
-    } catch (err: any) {
-      console.log(err.response?.data);
-      enqueueSnackbar("Failed to add admin", { variant: "error" });
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  } finally {
+    setSubmitting(false);
+  }
+};
 
-  const handleUpdate = async () => {
-    if (editingId === null) return;
-    if (!newAdmin.name.trim() || !newAdmin.email.trim()) {
-      enqueueSnackbar("Please fill all fields", { variant: "warning" });
-      return;
+const handleUpdate = async () => {
+  if (editingId === null) return;
+  if (!newAdmin.name.trim() || !newAdmin.email.trim()) {
+    enqueueSnackbar("Please fill all fields", { variant: "warning" });
+    return;
+  }
+  try {
+    setSubmitting(true);
+    await updateAdmin(editingId, { name: newAdmin.name, email: newAdmin.email });
+    setData((prev) => prev.map((a) => a.id === editingId ? { ...a, ...newAdmin } : a));
+    enqueueSnackbar("Admin Updated", { variant: "success" });
+    closeModal();
+  } catch (err) {
+    const error = err as ApiError;
+    const errors = error.response?.data?.errors;
+    if (errors) {
+      Object.values(errors).flat().forEach((msg: string) => {
+        enqueueSnackbar(msg, { variant: "error" });
+      });
+    } else {
+      enqueueSnackbar(error.response?.data?.message || "Update Failed", { variant: "error" });
     }
-    try {
-      setSubmitting(true);
-      await updateAdmin(editingId, { name: newAdmin.name, email: newAdmin.email });
-      setData((prev) => prev.map((a) => a.id === editingId ? { ...a, ...newAdmin } : a));
-      enqueueSnackbar("Admin Updated", { variant: "success" });
-      closeModal();
-    } 
-    catch (err: any) {
-      console.log(err.response?.data);
-      enqueueSnackbar(err.response?.data?.message || "Update Failed", { variant: "error" });
-      fetchAdmins();
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
+    fetchAdmins();
+  } finally {
+    setSubmitting(false);
+  }
+};
   const confirmUpdate = () => {
     openConfirm({
       title: "Update Admin",

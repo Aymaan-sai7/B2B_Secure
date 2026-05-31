@@ -1,4 +1,8 @@
 export interface ApiError {
-  statusMsg: string;
-  message: string;
+  response?: {
+    data?: {
+      message?: string;
+      errors?: Record<string, string[]>;
+    };
+  };
 }

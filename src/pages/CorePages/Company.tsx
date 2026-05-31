@@ -21,6 +21,7 @@ import {
   deleteCompanyAPI,
   approveCompanyAPI,
 } from "../../services/CompanyServices";
+import { ApiError } from "../../interfaces/apiError";
 
 interface Props {
   variant?: "full" | "mini";
@@ -127,35 +128,48 @@ export default function Company({ variant = "full", limit }: Props) {
   };
 
   const handleAdd = async () => {
-    if (!newCompany.name || !newCompany.email || !newCompany.password || !newCompany.industry || !newCompany.address) {
-      enqueueSnackbar("Please fill all fields", { variant: "warning" });
-      return;
+  if (!newCompany.name || !newCompany.email || !newCompany.password || !newCompany.industry || !newCompany.address) {
+    enqueueSnackbar("Please fill all fields", { variant: "warning" });
+    return;
+  }
+  try {
+    await createCompanyAPI(newCompany);
+    enqueueSnackbar("Company Added Successfully", { variant: "success" });
+    fetchCompanies();
+    closeModal();
+  } catch (err) {
+    const error = err as ApiError;
+    const errors = error.response?.data?.errors;
+    if (errors) {
+      Object.values(errors).flat().forEach((msg: string) => {
+        enqueueSnackbar(msg, { variant: "error" });
+      });
+    } else {
+      enqueueSnackbar(error.response?.data?.message || "Failed to add company", { variant: "error" });
     }
-    try {
-      await createCompanyAPI(newCompany);
-      enqueueSnackbar("Company Added Successfully", { variant: "success" });
-      fetchCompanies();
-      closeModal();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      console.log(err);
-      enqueueSnackbar(err?.response?.data?.message || "Failed to add company", { variant: "error" });
-    }
-  };
+  }
+};
 
   const handleUpdate = async () => {
-    if (editingId === null) return;
-    try {
-      await updateCompanyAPI(editingId, newCompany);
-      setData((prev) => prev.map((c) => c.id === editingId ? { ...c, ...newCompany } : c));
-      enqueueSnackbar("Company Updated", { variant: "success" });
-      closeModal();
-    } catch (err) {
-      console.log(err);
-      enqueueSnackbar("Update Failed", { variant: "error" });
-      fetchCompanies();
+  if (editingId === null) return;
+  try {
+    await updateCompanyAPI(editingId, newCompany);
+    setData((prev) => prev.map((c) => c.id === editingId ? { ...c, ...newCompany } : c));
+    enqueueSnackbar("Company Updated", { variant: "success" });
+    closeModal();
+  } catch (err) {
+    const error = err as ApiError;
+    const errors = error.response?.data?.errors;
+    if (errors) {
+      Object.values(errors).flat().forEach((msg: string) => {
+        enqueueSnackbar(msg, { variant: "error" });
+      });
+    } else {
+      enqueueSnackbar(error.response?.data?.message || "Update Failed", { variant: "error" });
     }
-  };
+    fetchCompanies();
+  }
+};
 
   const confirmUpdate = () => {
     openConfirmModal({
@@ -166,32 +180,32 @@ export default function Company({ variant = "full", limit }: Props) {
   };
 
   const handleApprove = async (id: number) => {
-    try {
-      await approveCompanyAPI(id);
-      setData((prev) =>
+  try {
+    await approveCompanyAPI(id);
+    setData((prev) =>
       view === "pending"
         ? prev.filter((c) => c.id !== id)
         : prev.map((c) => c.id === id ? { ...c, status: "Completed" } : c)
-);
-      enqueueSnackbar("Company Approved", { variant: "success" });
-    } catch (err) {
-      console.log(err);
-      enqueueSnackbar("Approve Failed", { variant: "error" });
-      fetchCompanies();
-    }
-  };
+    );
+    enqueueSnackbar("Company Approved", { variant: "success" });
+  } catch (err) {
+    const error = err as ApiError;
+    enqueueSnackbar(error.response?.data?.message || "Approve Failed", { variant: "error" });
+    fetchCompanies();
+  }
+};
 
   const handleDelete = async (id: number) => {
-    try {
-      setData((prev) => prev.filter((c) => c.id !== id));
-      await deleteCompanyAPI(id);
-      enqueueSnackbar("Company Deleted", { variant: "success" });
-    } catch (err) {
-      console.log(err);
-      enqueueSnackbar("Delete Failed", { variant: "error" });
-      fetchCompanies();
-    }
-  };
+  try {
+    setData((prev) => prev.filter((c) => c.id !== id));
+    await deleteCompanyAPI(id);
+    enqueueSnackbar("Company Deleted", { variant: "success" });
+  } catch (err) {
+    const error = err as ApiError;
+    enqueueSnackbar(error.response?.data?.message || "Delete Failed", { variant: "error" });
+    fetchCompanies();
+  }
+};
 
   const handleSort = (type: "all" | "state" | "Company-name" | "date") => setActiveSort(type);
 

@@ -36,7 +36,7 @@ export async function getAllTransactions(): Promise<transaction[]> {
 
 export async function getTransactionById(id: string): Promise<transaction> {
   const res = await api.get(`/admin/transactions/${id}`);
-  const t = res.data.data;
+  const t = res.data.data ?? res.data;
   return {
     id: t.id,
     senderCompany: t.sender_name,
