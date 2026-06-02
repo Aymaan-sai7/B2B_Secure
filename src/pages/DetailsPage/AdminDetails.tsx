@@ -105,7 +105,7 @@ export default function AdminDetails() {
   if (!admin) {
     return (
       <div className="min-h-[400px] flex flex-col items-center justify-center gap-3">
-        <span className="text-4xl">👤</span>
+        <span className="text-4xl"></span>
         <p className="text-sm text-[#9B9B9F]">Admin not found</p>
         <button onClick={() => navigate(-1)} className="text-xs text-[#0047FF] hover:underline">
           Go back
@@ -146,7 +146,7 @@ export default function AdminDetails() {
 
         {/* details */}
         <div className="px-6 py-2">
-          <Row label="Admin ID" value={`#${admin.id}`} />
+          <Row label="Admin ID" value={`${admin.id}`} />
           <Row label="Email" value={admin.email} />
           <Row label="Member since" value={formatDate(admin.created_at)} />
           <Row
