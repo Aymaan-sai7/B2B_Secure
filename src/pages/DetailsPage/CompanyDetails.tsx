@@ -89,7 +89,7 @@ export default function CompanyDetails() {
               {company.name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <p className="text-xs font-medium uppercase tracking-widest text-[#9B9B9F] mb-0.5">Company #{company.id}</p>
+              <p className="text-xs font-medium uppercase tracking-widest text-[#9B9B9F] mb-0.5">Company {company.id}</p>
               <h2 className="text-lg font-semibold text-[#12033A] dark:text-[#F3F4F6]">{company.name}</h2>
             </div>
           </div>
@@ -103,7 +103,7 @@ export default function CompanyDetails() {
 
         {/* details */}
         <div className="px-6 py-2">
-          <Row label="Company ID"   value={`#${company.id}`} />
+          <Row label="Company ID"   value={`${company.id}`} />
           <Row label="Email"        value={<a href={`mailto:${company.email}`} className="text-[#0047FF] hover:underline">{company.email}</a>} />
           <Row label="Industry"     value={company.industry || "-"} />
           <Row label="Address"      value={company.address  || "-"} />
