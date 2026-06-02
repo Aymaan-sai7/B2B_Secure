@@ -60,7 +60,7 @@ export default function CompanyDetails() {
   if (!company) {
     return (
       <div className="min-h-[400px] flex flex-col items-center justify-center gap-3">
-        <span className="text-4xl">🏢</span>
+        <span className="text-4xl"></span>
         <p className="text-sm text-[#9B9B9F]">Company not found</p>
         <button onClick={() => navigate(-1)} className="text-xs text-[#0047FF] hover:underline">Go back</button>
       </div>
