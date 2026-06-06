@@ -52,6 +52,9 @@ function formatCompany(c: CompanyApiResponse): CompanyType {
 export default function Company({ variant = "full", limit }: Props) {
   const navigate = useNavigate();
 
+  const [currentPage, setCurrentPage] = useState(1);
+const ITEMS_PER_PAGE = 10;
+
   const [data, setData] = useState<CompanyType[]>([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<"all" | "pending" | "completed">("all");
@@ -94,6 +97,8 @@ export default function Company({ variant = "full", limit }: Props) {
       setLoading(false);
     }
   };
+
+  useEffect(() => { setCurrentPage(1); }, [search, view, activeSort]);
 
   useEffect(() => { fetchCompanies(); }, [view]);
 
@@ -221,7 +226,11 @@ export default function Company({ variant = "full", limit }: Props) {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
 
-  const FinalyData = variant === "mini" && limit ? filteredData.slice(0, limit) : filteredData;
+  const FinalyData = variant === "mini" && limit
+  ? filteredData.slice(0, limit)
+  : filteredData.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
 
   const toggleFilterDropdown = () => setIsFilterOpen(!isFilterOpen);
   const closeFilterDropdown = () => setIsFilterOpen(false);
@@ -296,6 +305,61 @@ export default function Company({ variant = "full", limit }: Props) {
             variant={variant}
           />
         )}
+        {variant === "full" && totalPages > 1 && (
+  <div className="flex items-center justify-between px-2 pt-4 border-t border-[#E7E6EB] dark:border-[#5C5C5C]">
+    <p className="text-xs text-[#9B9B9F]">
+      Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredData.length)} of {filteredData.length}
+    </p>
+    <div className="flex items-center gap-1">
+      <button
+      title="Previous Page"
+        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+        disabled={currentPage === 1}
+        className="px-2 py-1.5 rounded-lg text-sm border border-[#E7E6EB] dark:border-[#5C5C5C] text-[#12033A] dark:text-[#EDEDED] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      {Array.from({ length: totalPages }, (_, i) => i + 1)
+        .filter((page) => page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1)
+        .reduce<(number | "...")[]>((acc, page, idx, arr) => {
+          if (idx > 0 && page - (arr[idx - 1] as number) > 1) acc.push("...");
+          acc.push(page);
+          return acc;
+        }, [])
+        .map((page, idx) =>
+          page === "..." ? (
+            <span key={`dots-${idx}`} className="px-2 text-[#9B9B9F] text-sm">...</span>
+          ) : (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page as number)}
+              className={`min-w-[32px] h-8 rounded-lg text-sm border transition-colors ${
+                currentPage === page
+                  ? "bg-[#12033A] text-white border-[#12033A] dark:bg-white dark:text-[#12033A] dark:border-white"
+                  : "border-[#E7E6EB] dark:border-[#5C5C5C] text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5"
+              }`}
+            >
+              {page}
+            </button>
+          )
+        )}
+
+      <button
+      title="Next Page"
+        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+        disabled={currentPage === totalPages}
+        className="px-2 py-1.5 rounded-lg text-sm border border-[#E7E6EB] dark:border-[#5C5C5C] text-[#12033A] dark:text-[#EDEDED] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+)}
       </motion.div>
 
       <Modal isOpen={isOpen} onClose={closeModal}>

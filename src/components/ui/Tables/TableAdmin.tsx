@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Edit2, Trash2, MoreHorizontal } from "lucide-react";
-import { AdminType } from "../../../interfaces/Admin"
+import { AdminType } from "../../../interfaces/Admin";
 
 interface Props {
   data: AdminType[];
@@ -18,7 +18,11 @@ function RoleBadge({ role }: { role: string }) {
   );
 }
 
-function ActionMenu({ admin, onEdit, onDelete }: {
+function ActionMenu({
+  admin,
+  onEdit,
+  onDelete,
+}: {
   admin: AdminType;
   onEdit: (a: AdminType) => void;
   onDelete: (id: number) => void;
@@ -68,7 +72,11 @@ function ActionMenu({ admin, onEdit, onDelete }: {
           className="fixed z-[9999] w-36 bg-[#FFFFFF] dark:bg-[#1E1E1E] border border-[#E7E6EB] dark:border-[#5C5C5C] rounded-xl shadow-lg overflow-hidden"
         >
           <button
-            onClick={(e) => { e.stopPropagation(); onEdit(admin); setIsOpen(false); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(admin);
+              setIsOpen(false);
+            }}
             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[#12033A] dark:text-[#EDEDED] hover:bg-[#E1E3FF] dark:hover:bg-[#0F1C2E] hover:text-[#0047FF] dark:hover:text-[#4DA3FF] transition-colors"
           >
             <Edit2 size={14} />
@@ -76,7 +84,11 @@ function ActionMenu({ admin, onEdit, onDelete }: {
           </button>
           <div className="h-px bg-[#E7E6EB] dark:bg-[#5C5C5C]" />
           <button
-            onClick={(e) => { e.stopPropagation(); onDelete(admin.id); setIsOpen(false); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(admin.id);
+              setIsOpen(false);
+            }}
             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[#FF4951] hover:bg-[#FEDEDF] dark:hover:bg-[#2A1719] transition-colors"
           >
             <Trash2 size={14} />
@@ -88,22 +100,38 @@ function ActionMenu({ admin, onEdit, onDelete }: {
   );
 }
 
-export default function AdminTable({ data, onEdit, onDelete, onRowClick, }: Props) {
+export default function AdminTable({
+  data,
+  onEdit,
+  onDelete,
+  onRowClick,
+}: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="max-w-full overflow-x-auto overflow-y-visible">
+    <div className="max-w-full overflow-x-auto no-scrollbar overflow-y-visible">
       <table className="w-full">
-
         {/* Header */}
         <thead className="border-y border-[#E7E6EB] dark:border-[#5C5C5C]">
           <tr className="text-left">
-            <th className="w-[60px] px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">{t("id")}</th>
-            <th className="px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">{t("name")}</th>
-            <th className="px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">{t("email")}</th>
-            <th className="px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">{t("role")}</th>
-            <th className="px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">{t("createAt")}</th>
-            <th className="w-[60px] px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider text-center">{t("action")}</th>
+            <th className="w-[60px] px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">
+              {t("id")}
+            </th>
+            <th className="px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">
+              {t("name")}
+            </th>
+            <th className="px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">
+              {t("email")}
+            </th>
+            <th className="px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">
+              {t("role")}
+            </th>
+            <th className="px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider">
+              {t("createAt")}
+            </th>
+            <th className="w-[60px] px-4 py-3 text-xs font-medium text-[#9B9B9F] uppercase tracking-wider text-center">
+              {t("action")}
+            </th>
           </tr>
         </thead>
 
@@ -111,18 +139,41 @@ export default function AdminTable({ data, onEdit, onDelete, onRowClick, }: Prop
         <tbody className="divide-y divide-[#E7E6EB] dark:divide-[#5C5C5C]">
           {data.length === 0 ? (
             <tr>
-              <td colSpan={6} className="px-4 py-12 text-center text-sm text-[#9B9B9F]">No admins found</td>
+              <td
+                colSpan={6}
+                className="px-4 py-12 text-center text-sm text-[#9B9B9F]"
+              >
+                No admins found
+              </td>
             </tr>
           ) : (
             data.map((admin, index) => (
-              <tr key={admin.id} onClick={() => onRowClick?.(admin.id)} className="hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors cursor-pointer">
-                <td className="px-4 py-3 text-sm text-[#9B9B9F] font-mono">{index + 1}</td>
-                <td className="px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED]">{admin.name}</td>
-                <td className="px-4 py-3 text-sm text-[#9B9B9F]">{admin.email}</td>
-                <td className="px-4 py-3"><RoleBadge role={admin.role} /></td>
-                <td className="px-4 py-3 text-sm text-[#9B9B9F]">{new Date(admin.createAt).toLocaleDateString()}</td>
+              <tr
+                key={admin.id}
+                onClick={() => onRowClick?.(admin.id)}
+                className="hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors cursor-pointer"
+              >
+                <td className="px-4 py-3 text-sm text-[#9B9B9F] font-mono">
+                  {index + 1}
+                </td>
+                <td className="px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED]">
+                  {admin.name}
+                </td>
+                <td className="px-4 py-3 text-sm text-[#9B9B9F]">
+                  {admin.email}
+                </td>
+                <td className="px-4 py-3">
+                  <RoleBadge role={admin.role} />
+                </td>
+                <td className="px-4 py-3 text-sm text-[#9B9B9F]">
+                  {new Date(admin.createAt).toLocaleDateString()}
+                </td>
                 <td className="px-4 py-3 text-center">
-                  <ActionMenu admin={admin} onEdit={onEdit} onDelete={onDelete} />
+                  <ActionMenu
+                    admin={admin}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                  />
                 </td>
               </tr>
             ))

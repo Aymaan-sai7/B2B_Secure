@@ -18,6 +18,8 @@ import { getAllTransactions, updateTransaction, deleteTransaction } from "../../
 
 export default function Transaction() {
   const navigate = useNavigate();
+const [currentPage, setCurrentPage] = useState(1);
+const ITEMS_PER_PAGE = 10;
 
   const [data, setData] = useState<transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,6 +62,8 @@ export default function Transaction() {
       setLoading(false);
     }
   };
+
+  useEffect(() => { setCurrentPage(1); }, [searchTerm, activeSort]);
 
   useEffect(() => { fetchTransactions(); }, []);
 
@@ -124,6 +128,7 @@ export default function Transaction() {
 
   const handleSort = (type: "all" | "state" | "sender" | "receiver") => setActiveSort(type);
 
+
   const finalData = [...data]
     .filter((item) =>
       item.senderCompany.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -138,6 +143,10 @@ export default function Transaction() {
       if (activeSort === "receiver") return a.receiverCompany.localeCompare(b.receiverCompany);
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
+
+    const paginatedData = finalData.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+const totalPages = Math.ceil(finalData.length / ITEMS_PER_PAGE);
+
 
   const toggleFilterDropdown = () => setIsFilterDropdownOpen(!isFilterDropdownOpen);
   const closeFilterDropdown = () => setIsFilterDropdownOpen(false);
@@ -172,7 +181,7 @@ export default function Transaction() {
           <TableSkeleton />
         ) : (
           <TransactionTable
-            data={finalData}
+            data={paginatedData}
             onEdit={startEdit}
             onDelete={(id) =>
               openConfirm({
@@ -184,6 +193,61 @@ export default function Transaction() {
             onRowClick={(id) => navigate(`/transaction/${id}`)}
           />
         )}
+        {totalPages > 1 && (
+  <div className="flex items-center justify-between px-2 pt-4 border-t border-[#E7E6EB] dark:border-[#5C5C5C]">
+    <p className="text-xs text-[#9B9B9F]">
+      Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, finalData.length)} of {finalData.length}
+    </p>
+    <div className="flex items-center gap-1">
+      <button
+        title="Previous Page"
+        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+        disabled={currentPage === 1}
+        className="px-2 py-1.5 rounded-lg text-sm border border-[#E7E6EB] dark:border-[#5C5C5C] text-[#12033A] dark:text-[#EDEDED] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      {Array.from({ length: totalPages }, (_, i) => i + 1)
+        .filter((page) => page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1)
+        .reduce<(number | "...")[]>((acc, page, idx, arr) => {
+          if (idx > 0 && page - (arr[idx - 1] as number) > 1) acc.push("...");
+          acc.push(page);
+          return acc;
+        }, [])
+        .map((page, idx) =>
+          page === "..." ? (
+            <span key={`dots-${idx}`} className="px-2 text-[#9B9B9F] text-sm">...</span>
+          ) : (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page as number)}
+              className={`min-w-[32px] h-8 rounded-lg text-sm border transition-colors ${
+                currentPage === page
+                  ? "bg-[#12033A] text-white border-[#12033A] dark:bg-white dark:text-[#12033A] dark:border-white"
+                  : "border-[#E7E6EB] dark:border-[#5C5C5C] text-[#12033A] dark:text-[#EDEDED] hover:bg-[#F1F3FA] dark:hover:bg-white/5"
+              }`}
+            >
+              {page}
+            </button>
+          )
+        )}
+
+      <button
+        title="Next Page"
+        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+        disabled={currentPage === totalPages}
+        className="px-2 py-1.5 rounded-lg text-sm border border-[#E7E6EB] dark:border-[#5C5C5C] text-[#12033A] dark:text-[#EDEDED] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#F1F3FA] dark:hover:bg-white/5 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+)}
       </motion.div>
 
       <Modal isOpen={isOpen} onClose={closeModal}>

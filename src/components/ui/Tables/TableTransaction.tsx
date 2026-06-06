@@ -25,13 +25,13 @@ function ActionMenu({
 
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-  e.stopPropagation();
-  const rect = e.currentTarget.getBoundingClientRect();
-  const spaceBelow = window.innerHeight - rect.bottom;
-  setDropdownPosition(spaceBelow < 200 ? "bottom" : "top");
-  setIsOpen((prev) => !prev);
-};
-      {/* الـ 3 نقط */}
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    setDropdownPosition(spaceBelow < 200 ? "bottom" : "top");
+    setIsOpen((prev) => !prev);
+  };
+  {/* الـ 3 نقط */ }
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -79,7 +79,7 @@ function ActionMenu({
 
 export default function TransactionTable({ data, onEdit, onDelete, onRowClick }: Props) {
   return (
-    <div className="max-w-full overflow-x-auto">
+    <div className="max-w-full overflow-x-auto no-scrollbar">
       <table className="w-full">
 
         <thead className="border-y border-[#E7E6EB] dark:border-[#5C5C5C]">
@@ -109,9 +109,27 @@ export default function TransactionTable({ data, onEdit, onDelete, onRowClick }:
                 onClick={() => onRowClick(t.id)}
               >
                 <td className="px-4 py-3 text-sm text-[#9B9B9F] font-mono">{index + 1}</td>
-                <td className=" px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED]">{t.senderCompany}</td>
-                <td className=" px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED]">{t.receiverCompany}</td>
-                <td className=" px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED]">
+                <td className="px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED] max-w-[120px]">
+                  <div className="relative group w-full">
+                    <span className="block truncate">{t.senderCompany}</span>
+                    <div className="absolute bottom-full left-0 mb-1 hidden group-hover:block z-50">
+                      <span className="bg-[#12033A] dark:bg-[#EDEDED] text-white dark:text-[#12033A] text-xs px-2 py-1 rounded-lg whitespace-nowrap shadow-lg">
+                        {t.senderCompany}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED] max-w-[120px]">
+                  <div className="relative group w-full">
+                    <span className="block truncate">{t.receiverCompany}</span>
+                    <div className="absolute bottom-full left-0 mb-1 hidden group-hover:block z-50">
+                      <span className="bg-[#12033A] dark:bg-[#EDEDED] text-white dark:text-[#12033A] text-xs px-2 py-1 rounded-lg whitespace-nowrap shadow-lg">
+                        {t.receiverCompany}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED]">
                   ${Number(t.amountSend).toLocaleString()}
                 </td>
                 <td className=" px-4 py-3 text-sm text-[#9B9B9F] whitespace-nowrap">{t.date}</td>
@@ -120,8 +138,8 @@ export default function TransactionTable({ data, onEdit, onDelete, onRowClick }:
                     size="sm"
                     color={
                       t.status === "completed" ? "success"
-                      : t.status === "pending" ? "warning"
-                      : "error"
+                        : t.status === "pending" ? "warning"
+                          : "error"
                     }
                   >
                     {t.status}

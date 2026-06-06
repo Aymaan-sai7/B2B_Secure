@@ -13,7 +13,7 @@ interface Props {
 }
 
 function ActionMenu({
-  company,onEdit,onDelete,onApprove,
+  company, onEdit, onDelete, onApprove,
 }: {
   company: CompanyType;
   onEdit: (c: CompanyType) => void;
@@ -26,16 +26,16 @@ function ActionMenu({
 
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-  e.stopPropagation();
+    e.stopPropagation();
 
-  const rect = e.currentTarget.getBoundingClientRect();
-  const spaceBelow = window.innerHeight - rect.bottom;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
 
-  setDropdownPosition(spaceBelow < 200 ? "bottom" : "top");
+    setDropdownPosition(spaceBelow < 200 ? "bottom" : "top");
 
-  setIsOpen((prev) => !prev);
-};
-  {/* الـ 3 نقط */}
+    setIsOpen((prev) => !prev);
+  };
+  {/* الـ 3 نقط */ }
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -103,7 +103,7 @@ export default function CompanyTable({
   variant = "full",
 }: Props) {
   return (
-    <div className="max-w-full overflow-x-auto">
+    <div className="max-w-full overflow-x-auto no-scrollbar">
       <table className="w-full">
 
         {/* Header */}
@@ -163,15 +163,28 @@ export default function CompanyTable({
               >
                 {variant === "full" ? (
                   <>
-                                    <td className="px-4 py-3 text-sm text-[#9B9B9F] font-mono">{index + 1}</td>
+                    <td className="px-4 py-3 text-sm text-[#9B9B9F] font-mono">{index + 1}</td>
 
-                    <td className=" px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED]">
-                      {company.name}
+                    <td className="px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED] max-w-[150px]">
+                      <div className="relative group w-full">
+                        <span className="block truncate">{company.name}</span>
+                        <div className="absolute bottom-full left-0 mb-1 hidden group-hover:block z-50">
+                          <span className="bg-[#12033A] dark:bg-[#EDEDED] text-white dark:text-[#12033A] text-xs px-2 py-1 rounded-lg whitespace-nowrap shadow-lg">
+                            {company.name}
+                          </span>
+                        </div>
+                      </div>
                     </td>
-                    <td className=" px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED]">
-                      {company.email}
+                    <td className="px-4 py-3 text-sm font-medium text-[#12033A] dark:text-[#EDEDED] max-w-[150px]">
+                      <div className="relative group w-full">
+                        <span className="block truncate">{company.email}</span>
+                        <div className="absolute bottom-full left-0 mb-1 hidden group-hover:block z-50">
+                          <span className="bg-[#12033A] dark:bg-[#EDEDED] text-white dark:text-[#12033A] text-xs px-2 py-1 rounded-lg whitespace-nowrap shadow-lg">
+                            {company.email}
+                          </span>
+                        </div>
+                      </div>
                     </td>
-                    
                     <td className=" px-4 py-3 text-sm text-[#9B9B9F] whitespace-nowrap">
                       {company.date}
                     </td>
@@ -180,8 +193,8 @@ export default function CompanyTable({
                         size="sm"
                         color={
                           company.status === "Completed" ? "success"
-                          : company.status === "Pending" ? "warning"
-                          : "error"
+                            : company.status === "Pending" ? "warning"
+                              : "error"
                         }
                       >
                         {company.status}
@@ -209,8 +222,8 @@ export default function CompanyTable({
                         size="sm"
                         color={
                           company.status === "Completed" ? "success"
-                          : company.status === "Pending" ? "warning"
-                          : "error"
+                            : company.status === "Pending" ? "warning"
+                              : "error"
                         }
                       >
                         {company.status}
